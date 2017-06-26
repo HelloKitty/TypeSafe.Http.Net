@@ -1,6 +1,10 @@
-# HaloLive.Library
+# TypeSafe.HTTP.NET
 
-Library containing assemblies for the HaloLive project. If you're looking for information or documentation consult the [Documentation Repo](https://github.com/HaloLive/Documentation) that contains design diagrams, endpoint and request/response documentation and information about much more.
+TypeSafe.HTTP.NET is an automatic type-safe REST web client. Bringing type safety to the uncertainty of web.
+
+TypeSafe.HTTP.NET is a heavily inspired by Square's [Retrofit library](http://square.github.io/retrofit/) and Paul Betts' [Refit library](https://github.com/paulcbetts/refit). It turns your REST or ASP.NET Web APIs into type-safe async RPCs (remote procedural calls):
+
+TODO add simple interface example.
 
 ## Setup
 
@@ -10,9 +14,13 @@ To use this project you'll first need a couple of things:
 
 ## Builds
 
+TODO: Our myget and also the nuget link
+
 Myget: [![halolive MyGet Build Status](https://www.myget.org/BuildSource/Badge/halolive?identifier=0aa218dd-d0bf-4f44-8ee2-a2ef886e5f6f)](https://www.myget.org/)
 
 ## Tests
+
+TODO actual tests
 
 |    | Linux Debug | Windows .NET Debug |
 |:---|----------------:|------------------:|
