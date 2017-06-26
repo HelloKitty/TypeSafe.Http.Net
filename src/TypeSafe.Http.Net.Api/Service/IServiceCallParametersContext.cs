@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TypeSafe.Http.Net.Service
+namespace TypeSafe.Http.Net
 {
 	/// <summary>
 	/// Contract for a type that provides or manages the context of the parameters 
