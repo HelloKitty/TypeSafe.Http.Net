@@ -1,9 +1,12 @@
 using System;
 using System.Net.Http;
-using TypeSafe.Http.Net;
 
-namespace TypeSafe.HTTP.NET.Metadata.Attributes
+namespace TypeSafe.Http.Net
 {
+	/// <summary>
+	/// The <see cref="HttpMethod"/>.Post version of the
+	/// <see cref="HttpBaseMethodAttribute"/>.
+	/// </summary>
 	[AttributeUsage(AttributeTargets.Method)]
 	public sealed class PostAttribute : HttpBaseMethodAttribute
 	{

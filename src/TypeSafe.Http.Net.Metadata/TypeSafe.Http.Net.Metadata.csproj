@@ -6,8 +6,4 @@
     <RootNamespace>TypeSafe.Http.Net</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Attributes\Methods\" />
-  </ItemGroup>
-
 </Project>
