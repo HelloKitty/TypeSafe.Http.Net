@@ -1,2 +1,2 @@
 dotnet restore
-dotnet build TypeSafe.HTTP.NET.sln
+dotnet build TypeSafe.Http.Net.sln

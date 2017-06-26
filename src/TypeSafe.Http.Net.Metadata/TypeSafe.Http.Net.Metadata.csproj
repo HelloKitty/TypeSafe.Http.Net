@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.1</TargetFramework>
+    <AssemblyName>TypeSafe.Http.Net.Metadata</AssemblyName>
+    <RootNamespace>TypeSafe.Http.Net</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Attributes\Methods\" />
+  </ItemGroup>
+
+</Project>
