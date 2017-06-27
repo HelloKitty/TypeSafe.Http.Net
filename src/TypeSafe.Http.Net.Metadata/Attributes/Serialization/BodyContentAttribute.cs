@@ -7,9 +7,9 @@ namespace TypeSafe.Http.Net
 	/// You should inherit this attribute to enable serialization.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter)]
-	public abstract class BodyAttribute : Attribute
+	public abstract class BodyContentAttribute : Attribute
 	{
-		protected BodyAttribute()
+		protected BodyContentAttribute()
 		{
 
 		}
