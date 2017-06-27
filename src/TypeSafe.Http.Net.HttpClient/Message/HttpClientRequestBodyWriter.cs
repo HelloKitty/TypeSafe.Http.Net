@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,37 +22,37 @@ namespace TypeSafe.Http.Net
 		}
 
 		/// <inheritdoc />
-		public void Write(byte[] bytes)
+		public void Write(byte[] bytes, string contentTypeValue)
 		{
 			//TODO: Should we worry about the content type it might set?
 			RequestMessage.Content = new ByteArrayContent(bytes);
-			RequestMessage.Content.Headers.Clear();
+			RequestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentTypeValue);
 		}
 
 		/// <inheritdoc />
-		public void Write(string content)
+		public void Write(string content, string contentTypeValue)
 		{
 			RequestMessage.Content = new StringContent(content);
-			RequestMessage.Content.Headers.Clear();
+			RequestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentTypeValue);
 		}
 
 		/// <inheritdoc />
-		public Task WriteAsync(byte[] bytes)
+		public Task WriteAsync(byte[] bytes, string contentTypeValue)
 		{
 			//TODO: Does this capture exceptions still?
 			//TODO: Should we worry about the content type it might set?
 			RequestMessage.Content = new ByteArrayContent(bytes);
-			RequestMessage.Content.Headers.Clear();
+			RequestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentTypeValue);
 
 			return Task.CompletedTask;
 		}
 
 		/// <inheritdoc />
-		public Task WriteAsync(string content)
+		public Task WriteAsync(string content, string contentTypeValue)
 		{
 			//TODO: Does this capture exceptions still?
 			RequestMessage.Content = new StringContent(content);
-			RequestMessage.Content.Headers.Clear();
+			RequestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentTypeValue);
 
 			return Task.CompletedTask;
 		}

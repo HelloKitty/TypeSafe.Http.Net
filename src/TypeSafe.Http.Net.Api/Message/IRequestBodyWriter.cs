@@ -14,24 +14,28 @@ namespace TypeSafe.Http.Net
 		/// Writes binary bytes as the content of the request body.
 		/// </summary>
 		/// <param name="bytes">The bytes to write.</param>
-		void Write(byte[] bytes);
+		/// <param name="contentTypeValue">The value to use as the content type.</param>
+		void Write(byte[] bytes, string contentTypeValue);
 
 		/// <summary>
 		/// Writes text/string data as the content of the request body.
 		/// </summary>
 		/// <param name="content"></param>
-		void Write(string content);
+		/// <param name="contentTypeValue">The value to use as the content type.</param>
+		void Write(string content, string contentTypeValue);
 
 		/// <summary>
 		/// Writes binary bytes asyncronously as the content of the request body.
 		/// </summary>
 		/// <param name="bytes">The bytes to write.</param>
-		Task WriteAsync(byte[] bytes);
+		/// <param name="contentTypeValue">The value to use as the content type.</param>
+		Task WriteAsync(byte[] bytes, string contentTypeValue);
 
 		/// <summary>
 		/// Writes text/string data asyncronously as the content of the request body.
 		/// </summary>
 		/// <param name="content"></param>
-		Task WriteAsync(string content);
+		/// <param name="contentTypeValue">The value to use as the content type.</param>
+		Task WriteAsync(string content, string contentTypeValue);
 	}
 }
