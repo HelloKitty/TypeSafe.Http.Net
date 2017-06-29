@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TypeSafe.Http.Net.Core\TypeSafe.Http.Net.Core.csproj" />
+    <ProjectReference Include="..\..\src\TypeSafe.Http.Net.HttpClient\TypeSafe.Http.Net.HttpClient.csproj" />
+  </ItemGroup>
+
+</Project>

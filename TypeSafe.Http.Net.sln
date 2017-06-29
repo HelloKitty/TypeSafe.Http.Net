@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeSafe.Http.Net.Api", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeSafe.Http.Net.HttpClient", "src\TypeSafe.Http.Net.HttpClient\TypeSafe.Http.Net.HttpClient.csproj", "{ACDD05F5-F138-4FB2-99E7-A0E1C8340A76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeSafe.Http.Net.Core", "src\TypeSafe.Http.Net.Core\TypeSafe.Http.Net.Core.csproj", "{D3232C5B-F261-4B22-8EB7-C6BE8623FE4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeSafe.Http.Net.Performance.NetCore.Tests", "tests\TypeSafe.Http.Net.Performance.NetCore.Tests\TypeSafe.Http.Net.Performance.NetCore.Tests.csproj", "{D018000A-02C3-4379-B5AE-8494C6B5079F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,14 @@ Global
 		{ACDD05F5-F138-4FB2-99E7-A0E1C8340A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACDD05F5-F138-4FB2-99E7-A0E1C8340A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACDD05F5-F138-4FB2-99E7-A0E1C8340A76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3232C5B-F261-4B22-8EB7-C6BE8623FE4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3232C5B-F261-4B22-8EB7-C6BE8623FE4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3232C5B-F261-4B22-8EB7-C6BE8623FE4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3232C5B-F261-4B22-8EB7-C6BE8623FE4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D018000A-02C3-4379-B5AE-8494C6B5079F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D018000A-02C3-4379-B5AE-8494C6B5079F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D018000A-02C3-4379-B5AE-8494C6B5079F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D018000A-02C3-4379-B5AE-8494C6B5079F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,5 +51,7 @@ Global
 		{7B39A156-DB19-4007-A53F-40398355B054} = {82223BC2-FD46-45B7-8714-A1BBB6FACC0E}
 		{C522729D-391F-4232-B37C-C9EA65761C7E} = {82223BC2-FD46-45B7-8714-A1BBB6FACC0E}
 		{ACDD05F5-F138-4FB2-99E7-A0E1C8340A76} = {82223BC2-FD46-45B7-8714-A1BBB6FACC0E}
+		{D3232C5B-F261-4B22-8EB7-C6BE8623FE4C} = {82223BC2-FD46-45B7-8714-A1BBB6FACC0E}
+		{D018000A-02C3-4379-B5AE-8494C6B5079F} = {FCFAE99C-C28A-44B7-A7BE-F9D5481C35B9}
 	EndGlobalSection
 EndGlobal

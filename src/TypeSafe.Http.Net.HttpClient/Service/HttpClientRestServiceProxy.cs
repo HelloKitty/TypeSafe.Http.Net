@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 namespace TypeSafe.Http.Net
 {
 	/// <summary>
-	/// <see cref="HttpClient"/> implementation of the <see cref="IRestServiceProxy{TProxyInterface}"/>.
+	/// <see cref="HttpClient"/> implementation of the <see cref="IRestServiceProxy"/>.
 	/// </summary>
-	/// <typeparam name="TProxyInterface"></typeparam>
-	public sealed class HttpClientRestServiceProxy<TProxyInterface> : IRestServiceProxy<TProxyInterface>, IDisposable
-		where TProxyInterface : class
+	public sealed class HttpClientRestServiceProxy : IRestServiceProxy, IDisposable
 	{
 		/// <inheritdoc />
 		public string BaseUrl { get; }
@@ -31,11 +29,11 @@ namespace TypeSafe.Http.Net
 		}
 
 		/// <inheritdoc />
-		public async Task<TReturnType> Send<TReturnType>(IRestClientRequestContext requestContext, IResponseDeserializationStrategy<TReturnType> deserializer)
+		public async Task<TReturnType> Send<TReturnType>(IRestClientRequestContext requestContext, IResponseDeserializationStrategy deserializer)
 		{
 			using (HttpResponseMessage response = await SendHttpRequest(requestContext))
 			{
-				return await deserializer.DeserializeAsync(new HttpClientResponseBodyReader(response));
+				return await deserializer.DeserializeAsync<TReturnType>(new HttpClientResponseBodyReader(response));
 			}
 		}
 
