@@ -5,4 +5,8 @@
     <RootNamespace>TypeSafe.Http.Net</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TypeSafe.HTTP.NET.Metadata\TypeSafe.Http.Net.Metadata.csproj" />
+  </ItemGroup>
+
 </Project>
