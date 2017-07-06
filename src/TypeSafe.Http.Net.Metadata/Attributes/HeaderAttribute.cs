@@ -64,7 +64,7 @@ namespace TypeSafe.Http.Net
 
 			//Always apprend the first one so we can easily add delimiters
 			return Values.Skip<string>(1)
-				.Aggregate(new StringBuilder().Append(Values.First<string>()), (stringBuilder, s) => stringBuilder.Append($",{s}"))
+				.Aggregate(new StringBuilder().Append(Values.First<string>()), (stringBuilder, s) => stringBuilder.Append($", {s}"))
 				.ToString();
 		}
 	}
