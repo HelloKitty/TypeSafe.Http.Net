@@ -16,10 +16,9 @@ namespace TypeSafe.Http.Net
 		/// <summary>
 		/// Tries to serialize the content
 		/// </summary>
-		/// <typeparam name="TContentType"></typeparam>
 		/// <param name="content">Content to try to serialize into the writer.</param>
 		/// <param name="writer">The writer to write the serialized content into.</param>
 		/// <returns></returns>
-		bool TrySerialize<TContentType>(TContentType content, IRequestBodyWriter writer);
+		bool TrySerialize(object content, IRequestBodyWriter writer);
 	}
 }

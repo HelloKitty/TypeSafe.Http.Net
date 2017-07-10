@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,11 +24,12 @@ namespace TypeSafe.Http.Net.Performance.Tests
 		{
 			RestServiceBuilder<ITestInterface> builder = new RestServiceBuilder<ITestInterface>();
 			builder.Register(new HttpClientRestServiceProxy(@"http://localhost.fiddler:5000"));
+			builder.Register<UrlEncodedBodyAttribute, UrlEncodedBodySerializerStrategy>(new UrlEncodedBodySerializerStrategy());
 			ITestInterface apiInterface = builder.Build();
 
 			Console.WriteLine("About to call intercepted method.");
 
-			Task result = apiInterface.TestMethod("test", "1", "2");
+			Task result = apiInterface.TestMethod(new TestModel(12456, "Two"), "test");
 
 			Console.WriteLine("API method temporarily yielded.");
 
@@ -39,11 +41,25 @@ namespace TypeSafe.Http.Net.Performance.Tests
 		[Header("Hello-Base-X", "Hi")]
 		public interface ITestInterface
 		{
-			[Get("/api/{endpoint}/{endpoint}")]
+			[Post("/api/{endpoint}")]
 			[Header("Hello-Base-Y", "Yo", "Another")]
 			[Header("Hello-Base-Y", "Test")]
 			[Header("Hello-Base-Y", "Test2", "Test3", "Test4")]
-			Task TestMethod([AliasAs("endpoint")] string end, [QueryStringParameter] string testParameter1, [QueryStringParameter, AliasAs("Rewrittenname")] string testParameter2);
+			Task TestMethod([UrlEncodedBody] TestModel model, [AliasAs("endpoint")] string end);
+		}
+
+		public class TestModel
+		{
+			public TestModel(int testModelString1, string testModelString2)
+			{
+				TestModelString1 = testModelString1;
+				TestModelString2 = testModelString2;
+			}
+
+			[AliasAs("AliasedParameter")]
+			public int TestModelString1 { get; }
+
+			public string TestModelString2 { get; }
 		}
 	}
 }
