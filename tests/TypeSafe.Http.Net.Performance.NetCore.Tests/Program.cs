@@ -27,7 +27,7 @@ namespace TypeSafe.Http.Net.Performance.Tests
 
 			Console.WriteLine("About to call intercepted method.");
 
-			Task result = apiInterface.TestMethod("test");
+			Task result = apiInterface.TestMethod("test", "1", "2");
 
 			Console.WriteLine("API method temporarily yielded.");
 
@@ -39,10 +39,11 @@ namespace TypeSafe.Http.Net.Performance.Tests
 		[Header("Hello-Base-X", "Hi")]
 		public interface ITestInterface
 		{
-			[Get("/api/{endpoint}")]
-			[Header("Hello-Base-Y", "Yo")]
-			[Header("Hello-Base-Y", "Another")]
-			Task TestMethod([AliasAs("endpoint")] string end);
+			[Get("/api/{endpoint}/{endpoint}")]
+			[Header("Hello-Base-Y", "Yo", "Another")]
+			[Header("Hello-Base-Y", "Test")]
+			[Header("Hello-Base-Y", "Test2", "Test3", "Test4")]
+			Task TestMethod([AliasAs("endpoint")] string end, [QueryStringParameter] string testParameter1, [QueryStringParameter, AliasAs("Rewrittenname")] string testParameter2);
 		}
 	}
 }

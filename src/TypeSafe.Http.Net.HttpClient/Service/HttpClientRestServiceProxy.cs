@@ -29,19 +29,65 @@ namespace TypeSafe.Http.Net
 		}
 
 		/// <inheritdoc />
-		public async Task<TReturnType> Send<TReturnType>(IRestClientRequestContext requestContext, IResponseDeserializationStrategy deserializer)
+		public async Task<TReturnType> Send<TReturnType>(IRestClientRequestContext requestContext, IRequestSerializationStrategy serializer, IDeserializationStrategyFactory deserializationFactory)
 		{
+			if (requestContext == null) throw new ArgumentNullException(nameof(requestContext));
+			if (serializer == null) throw new ArgumentNullException(nameof(serializer));
+
+			using (HttpResponseMessage response = await SendHttpRequest(requestContext, serializer))
+			{
+				return await FindValidDeserializer(deserializationFactory, response).DeserializeAsync<TReturnType>(new HttpClientResponseBodyReader(response));
+			}
+		}
+
+		private IResponseDeserializationStrategy FindValidDeserializer(IDeserializationStrategyFactory deserializationFactory, HttpResponseMessage response)
+		{
+			if (deserializationFactory == null) throw new ArgumentNullException(nameof(deserializationFactory));
+			if (response == null) throw new ArgumentNullException(nameof(response));
+			
+			//We must try to find a serializer based on the content type header in the response
+			return deserializationFactory.DeserializerFor(response.Content.Headers.ContentType.MediaType);
+		}
+
+		/// <inheritdoc />
+		public async Task<TReturnType> Send<TReturnType>(IRestClientRequestContext requestContext, IDeserializationStrategyFactory deserializationFactory)
+		{
+			if (requestContext == null) throw new ArgumentNullException(nameof(requestContext));
+
 			using (HttpResponseMessage response = await SendHttpRequest(requestContext))
 			{
-				return await deserializer.DeserializeAsync<TReturnType>(new HttpClientResponseBodyReader(response));
+				return await FindValidDeserializer(deserializationFactory, response).DeserializeAsync<TReturnType>(new HttpClientResponseBodyReader(response));
 			}
+		}
+
+		/// <inheritdoc />
+		public async Task Send(IRestClientRequestContext requestContext, IRequestSerializationStrategy serializer)
+		{
+			//Make sure to dipose the response
+			(await SendHttpRequest(requestContext, serializer)).Dispose();
 		}
 
 		/// <inheritdoc />
 		public async Task Send(IRestClientRequestContext requestContext)
 		{
+			//Send a request WITHOUT serialization which means no body.
 			//Make sure to dipose the response
 			(await SendHttpRequest(requestContext)).Dispose();
+		}
+
+		//TODO: Document
+		private async Task<HttpResponseMessage> SendHttpRequest(IRestClientRequestContext requestContext, IRequestSerializationStrategy serializer)
+		{
+			if (requestContext == null) throw new ArgumentNullException(nameof(requestContext));
+			if (serializer == null) throw new ArgumentNullException(nameof(serializer));
+
+			//Build a request message targeted towards the base URL and the action path built by the caller.
+			using (HttpRequestMessage request = new HttpRequestMessage(requestContext.RequestMethod, BuildFullUrlPath(requestContext)))
+			{
+				WriteBodyContent(requestContext, serializer, request);
+				WriteHeaders(requestContext, request);
+				return await SendBaseRequest(requestContext, request);
+			}
 		}
 
 		//TODO: Document
@@ -50,28 +96,45 @@ namespace TypeSafe.Http.Net
 			if (requestContext == null) throw new ArgumentNullException(nameof(requestContext));
 
 			//Build a request message targeted towards the base URL and the action path built by the caller.
-			using (HttpRequestMessage request = new HttpRequestMessage(requestContext.RequestMethod, $"{BaseUrl}{requestContext.ActionPath}"))
+			using (HttpRequestMessage request = new HttpRequestMessage(requestContext.RequestMethod, BuildFullUrlPath(requestContext)))
 			{
-				//Write the body first to avoid messing with the headers
-				if (requestContext.HasBody)
-					requestContext.WriteBody(new HttpClientRequestBodyWriter(request));
-
-				//We need to add the headers. We expect that they are already constructed with any formatted or inserted values already inserted.
-				foreach (IRequestHeader header in requestContext.RequestHeaders)
-				{
-					if (!request.Headers.TryAddWithoutValidation(header.HeaderType, header.HeaderValue))
-						throw new InvalidOperationException($"Request failed to add HeaderType: {header.HeaderType} with Value: {header.HeaderValue} with Context: {requestContext}.");
-				}
-
-				//Don't use a using here, the caller has to be responsible for diposing it because they own it, not us. They may need to use it.
-				HttpResponseMessage response = await Client.SendAsync(request);
-
-				//Throw a debug viable message if the response is not successful.
-				if (!response.IsSuccessStatusCode)
-					throw new InvalidOperationException($"Request failed with Code: {response.StatusCode} with Context: {requestContext}.");
-
-				return response;
+				WriteHeaders(requestContext, request);
+				return await SendBaseRequest(requestContext, request);
 			}
+		}
+
+		private string BuildFullUrlPath(IRestClientRequestContext requestContext)
+		{
+			return $"{BaseUrl}{requestContext.ActionPath}";
+		}
+
+		private async Task<HttpResponseMessage> SendBaseRequest(IRestClientRequestContext requestContext, HttpRequestMessage request)
+		{
+			//Don't use a using here, the caller has to be responsible for diposing it because they own it, not us. They may need to use it.
+			HttpResponseMessage response = await Client.SendAsync(request);
+
+			//Throw a debug viable message if the response is not successful.
+			if (!response.IsSuccessStatusCode)
+				throw new InvalidOperationException($"Request failed with Code: {response.StatusCode} with Context: {requestContext}.");
+
+			return response;
+		}
+
+		private static void WriteHeaders(IRestClientRequestContext requestContext, HttpRequestMessage request)
+		{
+			//We need to add the headers. We expect that they are already constructed with any formatted or inserted values already inserted.
+			foreach (IRequestHeader header in requestContext.RequestHeaders)
+			{
+				if (!request.Headers.TryAddWithoutValidation(header.HeaderType, header.HeaderValue))
+					throw new InvalidOperationException($"Request failed to add HeaderType: {header.HeaderType} with Value: {header.HeaderValue} with Context: {requestContext}.");
+			}
+		}
+
+		private static void WriteBodyContent(IRestClientRequestContext requestContext, IRequestSerializationStrategy serializer, HttpRequestMessage request)
+		{
+			//Write the body first to avoid messing with the headers
+			if (requestContext.BodyContext.HasBody)
+				serializer.TrySerialize(requestContext.BodyContext.Body, new HttpClientRequestBodyWriter(request));
 		}
 
 		/// <inheritdoc />

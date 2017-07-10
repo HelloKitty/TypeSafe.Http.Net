@@ -15,6 +15,8 @@ namespace TypeSafe.Http.Net
 		/// </summary>
 		private IRestServiceProxy Client { get; set; }
 
+		private ContentSerializationFactory SerializerFactory { get; }
+
 		static RestServiceBuilder()
 		{
 			//Enforce that it is in an interface.
@@ -24,7 +26,7 @@ namespace TypeSafe.Http.Net
 
 		public RestServiceBuilder()
 		{
-			
+			SerializerFactory = new ContentSerializationFactory();
 		}
 
 		/// <inheritdoc />
@@ -33,16 +35,19 @@ namespace TypeSafe.Http.Net
 			//I can't think of a good reason we shouldn't allow multiple to be built.
 			//so we won't prevent multiple calls to build.
 			return new ProxyGenerator()
-				.CreateInterfaceProxyWithoutTarget<TRestServiceInterface>(new RestServiceCallAsyncCallInterceptor(new RequestContextFactory(new HeaderServiceCallInterpreter()), Client).ToInterceptor());
+				.CreateInterfaceProxyWithoutTarget<TRestServiceInterface>(new RestServiceCallAsyncCallInterceptor(new RequestContextFactory(new HeaderServiceCallInterpreter()), Client, SerializerFactory, SerializerFactory).ToInterceptor());
 		}
 
 		/// <inheritdoc />
-		public bool Register<TBodySerializerMetadataType, TResponseDeserializerMetadataType, TSerializerType>(TSerializerType serializationService) 
+		public bool Register<TBodySerializerMetadataType, TSerializerType>(TSerializerType serializationService) 
 			where TBodySerializerMetadataType : BodyContentAttribute 
-			where TResponseDeserializerMetadataType : ResponseContentAttribute 
-			where TSerializerType : IResponseDeserializationStrategy, IRequestSerializationStrategy
+			where TSerializerType : IResponseDeserializationStrategy, IRequestSerializationStrategy, IContentTypeAssociable
 		{
-			throw new NotImplementedException();
+			if (serializationService == null) throw new ArgumentNullException(nameof(serializationService));
+			if (SerializerFactory == null) throw new InvalidOperationException($"Serialization factory is null and never should be.");
+
+			//Just forward it to the factory
+			return SerializerFactory.Register<TBodySerializerMetadataType, TSerializerType>(serializationService);
 		}
 
 		/// <inheritdoc />

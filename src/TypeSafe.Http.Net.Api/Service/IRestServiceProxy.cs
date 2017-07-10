@@ -8,18 +8,35 @@ namespace TypeSafe.Http.Net
 	/// <summary>
 	/// Contract for rest service proxies that mediate between the HTTP application layer and the consuming user.
 	/// </summary>
-	/// <typeparam name="TProxyInterface">The interface proxy type.</typeparam>
 	public interface IRestServiceProxy : IRestService
 	{
 		/// <summary>
 		/// Sends a request with the designated <see cref="TReturnType"/> with the provided context and the strategy
-		/// for deserializing the response.
+		/// for serializing the body content.
 		/// </summary>
 		/// <typeparam name="TReturnType">The return type to expect.</typeparam>
 		/// <param name="requestContext">The context of the request.</param>
-		/// <param name="deserializer">The deserialization strategy.</param>
+		/// <param name="serializer"></param>
+		/// <param name="deserializationFactory"></param>
 		/// <returns>The a future promise for a deserialized return data.</returns>
-		Task<TReturnType> Send<TReturnType>(IRestClientRequestContext requestContext, IResponseDeserializationStrategy deserializer);
+		Task<TReturnType> Send<TReturnType>(IRestClientRequestContext requestContext, IRequestSerializationStrategy serializer, IDeserializationStrategyFactory deserializationFactory);
+
+		/// <summary>
+		/// Sends a request with the designated <see cref="TReturnType"/> with the provided context.
+		/// </summary>
+		/// <typeparam name="TReturnType">The return type to expect.</typeparam>
+		/// <param name="requestContext">The context of the request.</param>
+		/// <param name="deserializationFactory"></param>
+		/// <returns>The a future promise for a deserialized return data.</returns>
+		Task<TReturnType> Send<TReturnType>(IRestClientRequestContext requestContext, IDeserializationStrategyFactory deserializationFactory);
+
+		/// <summary>
+		/// Sends a request with the provided context with no response data.
+		/// </summary>
+		/// <param name="requestContext">The context of the request.</param>
+		/// <param name="serializer"></param>
+		/// <returns>A future.</returns>
+		Task Send(IRestClientRequestContext requestContext, IRequestSerializationStrategy serializer);
 
 		/// <summary>
 		/// Sends a request with the provided context with no response data.

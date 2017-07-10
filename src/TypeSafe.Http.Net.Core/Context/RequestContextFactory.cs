@@ -1,6 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
@@ -12,6 +18,7 @@ namespace TypeSafe.Http.Net
 	public sealed class RequestContextFactory : IRequestContextFactory
 	{
 		//Use \{\*?.*?\} to look at the action path in the attributes.
+		//Use \?[^&]*|&[^&]* for query string detection
 		private IHeaderServiceCallInterpreter HeaderInterpreterService { get; }
 
 		public RequestContextFactory(IHeaderServiceCallInterpreter headerInterpreterService)
@@ -36,8 +43,28 @@ namespace TypeSafe.Http.Net
 			//We can build a get request much easier; it doesn't have a body.
 			if (httpMethod.Method == HttpMethod.Get)
 				return BuildGetRequest(callContext, parameterContext.HasParameters ? BuildFormattedActionPath(httpMethod.Path, callContext, parameterContext) : httpMethod.Path);
+			else
+				return BuildNonGetRequest(httpMethod.Method, callContext, parameterContext, 
+					parameterContext.HasParameters ? BuildFormattedActionPath(httpMethod.Path, callContext, parameterContext) : httpMethod.Path);
+		}
 
-			return null;
+		private IRestClientRequestContext BuildNonGetRequest(HttpMethod httpMethod, IServiceCallContext callContext, IServiceCallParametersContext parameterContext, string baseActionPath)
+		{
+			//We don't currently support dynamic header values so
+			IEnumerable<IRequestHeader> headers = HeaderInterpreterService.ProduceFromContext(callContext, new NoParametersContext());
+
+			if (parameterContext.HasParameters)
+			{
+				//If it has parameters it STILL may not have a body. They may be used for querystring or action path.
+				ParameterInfo first = callContext.ServiceMethod.GetParameters().First();
+
+				//It should have the body content attribute, which is required explictly, that indicates how it should be serialized.
+				if(first.GetCustomAttribute<BodyContentAttribute>() != null)
+					return new RestRequestContext(httpMethod, baseActionPath, headers, new DefaultBodyContext(parameterContext.Parameters.First(), first.GetCustomAttribute<BodyContentAttribute>().GetType()));
+			}
+
+			//If it has no parameters then we should return a context with no body.
+			return new RestRequestContext(httpMethod, baseActionPath, headers, new NoBodyContext());
 		}
 
 		public IRestClientRequestContext BuildGetRequest(IServiceCallContext callContext, string baseActionPath)
@@ -81,7 +108,7 @@ namespace TypeSafe.Http.Net
 					}
 				}
 
-				if(asAttributes == null)
+				if (asAttributes == null)
 					asAttributes = parameterInfos.Select(x => x.GetCustomAttribute<AliasAsAttribute>()).ToArray();
 
 				//If it doesn't match the name of a parameter we need to reflect on each parameter to see if it's aliased to what we're looking for
@@ -97,6 +124,34 @@ namespace TypeSafe.Http.Net
 						//Check if it matches the parameter name
 						if (matchString == $"{{{asAttributes[i].Name}}}")
 							baseActionPath = baseActionPath.Replace(matchString, parameters.Parameters[i].ToString());
+					}
+				}
+			}
+
+			//Now we have to build the querystring
+			MatchCollection queryStringMatches = Regex.Matches(baseActionPath, @"\?[^&]*|&[^&]*");
+
+			bool useQuestionMark = queryStringMatches.IsNullOrEmpty();
+
+			//If there are matches it means there is a query string already being build so we need to append to it.
+			for(int i = 0; i < parameterInfos.Length; i++)
+			{
+				//Check each parameter if it's a querystring parameter.
+				if (parameterInfos[i].GetCustomAttribute<QueryStringParameterAttribute>() != null)
+				{
+					//Check for alias'd parameters
+					AliasAsAttribute asAttribute = parameterInfos[i].GetCustomAttribute<AliasAsAttribute>();
+
+					string parameterName = asAttribute != null ? asAttribute.Name : parameterInfos[i].Name;
+
+					if (useQuestionMark)
+					{
+						baseActionPath = $"{baseActionPath}?{parameterName}={parameters.Parameters[i]}";
+						useQuestionMark = false;
+					}
+					else
+					{
+						baseActionPath = $"{baseActionPath}&{parameterName}={parameters.Parameters[i]}";
 					}
 				}
 			}
