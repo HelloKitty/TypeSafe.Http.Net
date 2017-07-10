@@ -65,7 +65,7 @@ namespace TypeSafe.Http.Net
 			await ProxyClient.Send(context, serializer);
 		}
 
-		public async Task AsyncWithReturn<TResult>(IInvocation invocation)
+		public async Task<TResult> AsyncWithReturn<TResult>(IInvocation invocation)
 		{
 			//TODO: Handle return data deserialization.
 			IRestClientRequestContext context = RequestContextFactory.CreateContext(new CastleCoreInvocationCallContextAdapter(invocation),
@@ -74,15 +74,14 @@ namespace TypeSafe.Http.Net
 			//If it has no body we don't need to provide or produce serializers for it.
 			if (!context.BodyContext.HasBody)
 			{
-				await ProxyClient.Send<TResult>(context, DeserializerFactory);
-				return;
+				return await ProxyClient.Send<TResult>(context, DeserializerFactory);
 			}
 
 			//We need to look at the request to determine which serializer strategy should be used.
 			IRequestSerializationStrategy serializer = SerializerFactory.SerializerFor(context.BodyContext.ContentAttributeType);
 
 			//Because we don't need to get any returned information we can just send it
-			await ProxyClient.Send<TResult>(context, serializer, DeserializerFactory);
+			return await ProxyClient.Send<TResult>(context, serializer, DeserializerFactory);
 		}
 
 		/// <inheritdoc />
