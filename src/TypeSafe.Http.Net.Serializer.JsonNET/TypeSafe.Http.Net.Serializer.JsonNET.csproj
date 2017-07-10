@@ -2,6 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.1</TargetFramework>
+    <Authors>https://github.com/HelloKitty</Authors>
+    <Company>https://github.com/HelloKitty</Company>
+    <Product>TypeSafe.Http.Net</Product>
+    <Description>TypeSafe.Http.Net is a type safe REST/HTTP/Web framework that automagically allows you to make service calls to servers through simple annotated interfaces.
+
+This library contains a serialization implementation for the Json.NET (newtonsoft) JSON serializer for TypeSafe.Http.Net. To register this serializer with the builder use the RegisterJsonNetSerializer extension.</Description>
+    <Copyright>Andrew Blakely</Copyright>
+    <PackageLicenseUrl>https://github.com/HelloKitty/TypeSafe.Http.Net/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/HelloKitty/TypeSafe.Http.Net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/HelloKitty/TypeSafe.Http.Net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Refit Rest Client .NET Retrofit TypeSafe HTTP Type Safe</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.1\TypeSafe.Http.Net.Serializer.JsonNET.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

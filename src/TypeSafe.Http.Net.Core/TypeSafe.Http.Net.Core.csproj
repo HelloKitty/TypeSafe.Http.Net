@@ -2,6 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
+    <Authors>https://github.com/HelloKitty</Authors>
+    <Company>https://github.com/HelloKitty</Company>
+    <Product>TypeSafe.Http.Net</Product>
+    <Description>TypeSafe.Http.Net is a type safe REST/HTTP/Web framework that automagically allows you to make service calls to servers through simple annotated interfaces.
+
+The Core library is the library you should include in your project. It conains a partial implementation of the TypeSafe.Http.Net.Api that with Castle.Core's DynamicProxy allows you to create instances of your Service interface that you have annotated with the TypeSafe.Http.Net.Metadata.
+
+Most importantly it contains the RestServiceBuilder&lt;TRestServiceInterface&gt; type which can be interfaced with to generate a REST client interface.</Description>
+    <Copyright>Andrew Blakely</Copyright>
+    <PackageLicenseUrl>https://github.com/HelloKitty/TypeSafe.Http.Net/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/HelloKitty/TypeSafe.Http.Net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/HelloKitty/TypeSafe.Http.Net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Refit Rest Client .NET Retrofit TypeSafe HTTP Type Safe</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.4\TypeSafe.Http.Net.Core.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

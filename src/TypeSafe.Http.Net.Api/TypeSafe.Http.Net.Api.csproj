@@ -3,6 +3,28 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.1</TargetFramework>
     <RootNamespace>TypeSafe.Http.Net</RootNamespace>
+    <Description>TypeSafe.Http.Net is a type safe REST/HTTP/Web framework that automagically allows you to make service calls to servers through simple annotated interfaces.
+
+The API library consists exclusively of the interfaces that represent the API of the library. This library contains no functional classes and no functionality and should only really be used if you want to implement custom serializers or clients.</Description>
+    <Product>TypeSafe.Http.Net</Product>
+    <Company>https://github.com/HelloKitty</Company>
+    <Authors>https://github.com/HelloKitty</Authors>
+    <PackageProjectUrl>https://github.com/HelloKitty/TypeSafe.Http.Net</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/HelloKitty/TypeSafe.Http.Net/blob/master/LICENSE</PackageLicenseUrl>
+    <Copyright>Andrew Blakely</Copyright>
+    <RepositoryUrl>https://github.com/HelloKitty/TypeSafe.Http.Net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Refit Rest Client .NET Retrofit TypeSafe HTTP Type Safe</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageId>TypeSafe.Http.Net.Api</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.1\TypeSafe.Http.Net.Api.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
