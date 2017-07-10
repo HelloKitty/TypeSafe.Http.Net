@@ -23,11 +23,11 @@ namespace TypeSafe.Http.Net.Performance.Tests
 
 		public static async Task AsyncMain()
 		{
-			RestServiceBuilder<ITestInterface> builder = new RestServiceBuilder<ITestInterface>();
-			builder.Register(new HttpClientRestServiceProxy(@"http://localhost.fiddler:5000"));
-			builder.Register<UrlEncodedBodyAttribute, UrlEncodedBodySerializerStrategy>(new UrlEncodedBodySerializerStrategy());
-			builder.Register<JsonBodyAttribute, JsonNetJsonBodySerializerStrategy>(new JsonNetJsonBodySerializerStrategy());
-			ITestInterface apiInterface = builder.Build();
+			ITestInterface apiInterface = new RestServiceBuilder<ITestInterface>()
+				.RegisterDotNetHttpClient(@"http://localhost.fiddler:5000")
+				.RegisterDefaultSerializers()
+				.RegisterJsonNetSerializer()
+				.Build();
 
 			Console.WriteLine("About to call intercepted method.");
 
