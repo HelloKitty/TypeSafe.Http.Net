@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace TypeSafe.Http.Net.Performance.Tests
 {
@@ -25,17 +26,18 @@ namespace TypeSafe.Http.Net.Performance.Tests
 			RestServiceBuilder<ITestInterface> builder = new RestServiceBuilder<ITestInterface>();
 			builder.Register(new HttpClientRestServiceProxy(@"http://localhost.fiddler:5000"));
 			builder.Register<UrlEncodedBodyAttribute, UrlEncodedBodySerializerStrategy>(new UrlEncodedBodySerializerStrategy());
+			builder.Register<JsonBodyAttribute, JsonNetJsonBodySerializerStrategy>(new JsonNetJsonBodySerializerStrategy());
 			ITestInterface apiInterface = builder.Build();
 
 			Console.WriteLine("About to call intercepted method.");
 
-			Task result = apiInterface.TestMethod(new TestModel(12456, "Two"), "test");
+			Task<TestReturnModel> result = apiInterface.TestMethod(new TestModel(12456, "Two"), "test");
 
 			Console.WriteLine("API method temporarily yielded.");
 
 			await result;
 
-			Console.WriteLine("Finished call intercepted method.");
+			Console.WriteLine($"Finished call intercepted method. Result: {result.Result.ReturnValue}");
 		}
 
 		[Header("Hello-Base-X", "Hi")]
@@ -45,9 +47,10 @@ namespace TypeSafe.Http.Net.Performance.Tests
 			[Header("Hello-Base-Y", "Yo", "Another")]
 			[Header("Hello-Base-Y", "Test")]
 			[Header("Hello-Base-Y", "Test2", "Test3", "Test4")]
-			Task TestMethod([UrlEncodedBody] TestModel model, [AliasAs("endpoint")] string end);
+			Task<TestReturnModel> TestMethod([JsonBody] TestModel model, [AliasAs("endpoint")] string end);
 		}
 
+		[JsonObject]
 		public class TestModel
 		{
 			public TestModel(int testModelString1, string testModelString2)
@@ -56,10 +59,24 @@ namespace TypeSafe.Http.Net.Performance.Tests
 				TestModelString2 = testModelString2;
 			}
 
+			[JsonProperty]
 			[AliasAs("AliasedParameter")]
 			public int TestModelString1 { get; }
 
+			[JsonProperty]
 			public string TestModelString2 { get; }
+		}
+
+		[JsonObject]
+		public class TestReturnModel
+		{
+			[JsonProperty]
+			public string ReturnValue { get; }
+
+			public TestReturnModel(string returnValue)
+			{
+				ReturnValue = returnValue;
+			}
 		}
 	}
 }

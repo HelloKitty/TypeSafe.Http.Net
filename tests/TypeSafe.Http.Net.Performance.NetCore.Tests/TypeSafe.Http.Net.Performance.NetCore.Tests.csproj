@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\TypeSafe.Http.Net.Core\TypeSafe.Http.Net.Core.csproj" />
     <ProjectReference Include="..\..\src\TypeSafe.Http.Net.HttpClient\TypeSafe.Http.Net.HttpClient.csproj" />
+    <ProjectReference Include="..\..\src\TypeSafe.Http.Net.Serializer.JsonNET\TypeSafe.Http.Net.Serializer.JsonNET.csproj" />
   </ItemGroup>
 
 </Project>

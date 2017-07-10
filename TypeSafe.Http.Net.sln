@@ -9,13 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FCFAE99C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeSafe.Http.Net.Metadata", "src\TypeSafe.HTTP.NET.Metadata\TypeSafe.Http.Net.Metadata.csproj", "{7B39A156-DB19-4007-A53F-40398355B054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeSafe.Http.Net.Api", "src\TypeSafe.Http.Net.Api\TypeSafe.Http.Net.Api.csproj", "{C522729D-391F-4232-B37C-C9EA65761C7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeSafe.Http.Net.Api", "src\TypeSafe.Http.Net.Api\TypeSafe.Http.Net.Api.csproj", "{C522729D-391F-4232-B37C-C9EA65761C7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeSafe.Http.Net.HttpClient", "src\TypeSafe.Http.Net.HttpClient\TypeSafe.Http.Net.HttpClient.csproj", "{ACDD05F5-F138-4FB2-99E7-A0E1C8340A76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeSafe.Http.Net.HttpClient", "src\TypeSafe.Http.Net.HttpClient\TypeSafe.Http.Net.HttpClient.csproj", "{ACDD05F5-F138-4FB2-99E7-A0E1C8340A76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeSafe.Http.Net.Core", "src\TypeSafe.Http.Net.Core\TypeSafe.Http.Net.Core.csproj", "{D3232C5B-F261-4B22-8EB7-C6BE8623FE4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeSafe.Http.Net.Core", "src\TypeSafe.Http.Net.Core\TypeSafe.Http.Net.Core.csproj", "{D3232C5B-F261-4B22-8EB7-C6BE8623FE4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeSafe.Http.Net.Performance.NetCore.Tests", "tests\TypeSafe.Http.Net.Performance.NetCore.Tests\TypeSafe.Http.Net.Performance.NetCore.Tests.csproj", "{D018000A-02C3-4379-B5AE-8494C6B5079F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeSafe.Http.Net.Performance.NetCore.Tests", "tests\TypeSafe.Http.Net.Performance.NetCore.Tests\TypeSafe.Http.Net.Performance.NetCore.Tests.csproj", "{D018000A-02C3-4379-B5AE-8494C6B5079F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeSafe.Http.Net.Serializer.JsonNET", "src\TypeSafe.Http.Net.Serializer.JsonNET\TypeSafe.Http.Net.Serializer.JsonNET.csproj", "{0881A590-1180-4A2C-9F73-77A83F305B75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{D018000A-02C3-4379-B5AE-8494C6B5079F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D018000A-02C3-4379-B5AE-8494C6B5079F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D018000A-02C3-4379-B5AE-8494C6B5079F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0881A590-1180-4A2C-9F73-77A83F305B75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0881A590-1180-4A2C-9F73-77A83F305B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0881A590-1180-4A2C-9F73-77A83F305B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0881A590-1180-4A2C-9F73-77A83F305B75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,5 +59,6 @@ Global
 		{ACDD05F5-F138-4FB2-99E7-A0E1C8340A76} = {82223BC2-FD46-45B7-8714-A1BBB6FACC0E}
 		{D3232C5B-F261-4B22-8EB7-C6BE8623FE4C} = {82223BC2-FD46-45B7-8714-A1BBB6FACC0E}
 		{D018000A-02C3-4379-B5AE-8494C6B5079F} = {FCFAE99C-C28A-44B7-A7BE-F9D5481C35B9}
+		{0881A590-1180-4A2C-9F73-77A83F305B75} = {82223BC2-FD46-45B7-8714-A1BBB6FACC0E}
 	EndGlobalSection
 EndGlobal
