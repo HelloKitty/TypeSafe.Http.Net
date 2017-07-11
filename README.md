@@ -99,6 +99,60 @@ User-Agent: TestClient 1.0
 Custom-Header: Test1, Test2, Test3, Test4, Test5, Test6
 ```
 
+Dynamic headers are a planned feature but not yet supported.
+
+### Query String Parameters
+
+TypeSafe.Http.Net also supports querystring parameters in multiple ways. The most basic way is a static querystring parameter.
+
+```
+public interface IHttpServiceInterface
+{
+  [Get("/api/test?param1=1&param2=2")]
+  Task Test()
+}
+```
+
+Result of calling Test:
+
+```
+GET {url}/api/test?param1=1&param2=2
+```
+
+Another way is to utilize the [QueryStringParameter](https://github.com/HelloKitty/TypeSafe.Http.Net/blob/master/src/TypeSafe.Http.Net.Metadata/Attributes/Serialization/QueryStringParameterAttribute.cs) attribute like the following.
+
+```
+public interface IHttpServiceInterface
+{
+  [Get("/api/test?param1=1&param2=2")]
+  Task Test([QueryStringParameter] string t)
+}
+```
+
+Result of calling Test:
+
+```
+GET {url}/api/test?param1=1&param2=2&t={t}
+```
+
+{t} will be the value of the string provided during the method call. It is essentially effortless. You do not need to worry about existing querystring parameters or even if you have none. The querystring will be built for you.
+
+Some more examples.
+
+```
+public interface IHttpServiceInterface
+{
+  [Get("/api/test")]
+  Task Test([QueryStringParameter, AliasAs("param1")] string test)
+}
+```
+
+Result of calling Test:
+
+```
+GET {url}/api/test?param1={test}
+```
+
 ## Setup
 
 To compile or open TypeSafe.Http.Net project you'll first need a couple of things:
