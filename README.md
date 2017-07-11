@@ -250,6 +250,14 @@ Body: {data}
 
 There are various other serializers that work in a similar fashion. Inlcude serializers like the [Json.NET Serializer Implementation](https://www.nuget.org/packages/TypeSafe.Http.Net.Serializer.JsonNET) and register it to use with [JsonBody](https://github.com/HelloKitty/TypeSafe.Http.Net/blob/master/src/TypeSafe.Http.Net.Metadata/Attributes/Serialization/Concrete/JsonBodyAttribute.cs) Attribute.
 
+### Response Body Content
+
+Unlike Refit the response content is deserialized based on the returned content-type. You do not need to annoate anything. This is handled internally. If a deserializer is not found that handles the returned content-type it will throw an exception.
+
+For example if application/json is returned in the response body it will look for a register serializer that handles application/json and then try to deserialize it as a JSON object.
+
+This design allows the internal library to handle deserialization for you based on how the server has returned the response. If you want to indicate a specific content type should be sent back use the HTTP recommended Accept headers.
+
 ## Setup
 
 To compile or open TypeSafe.Http.Net project you'll first need a couple of things:
