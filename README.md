@@ -8,7 +8,7 @@ TypeSafe.Http.Net is a heavily inspired by Square's [Retrofit library](http://sq
 
 TypeSafe.Http.Net is designed for ease-of-use. Using the modern concept of reflection, metadata or annotations you can prepare a .NET interface type to become a client to a REST/HTTP/Web service.
 
-Firstly to prepare an interface for use in TypeSafe.Http.Net you'll want to add the NuGet Package [TypeSafe.Http.Net.Metadata](https://www.nuget.org/packages/TypeSafe.Http.Net.Metadata/) that contains the attributes/annotations for the project. This project currently has a requirement of Netstandard1.1 but I am working on reducing this to Netstandard1.0.
+Firstly to prepare an interface for use in TypeSafe.Http.Net you'll want to add the NuGet Package [TypeSafe.Http.Net.Metadata](https://www.nuget.org/packages/TypeSafe.Http.Net.Metadata/) that contains the attributes/annotations for the project. The Metadata project currently has a requirement of Netstandard1.1 but I am working on reducing this to Netstandard1.0.
 
 ### Http Methods
 
@@ -26,8 +26,16 @@ public interface IHttpServiceInterface
 **Result of calling Test:**
 
 ```
-GET {url}/api/test
+GET {baseurl}/api/test
 ```
+
+In a later section that includes documentation on parameter attributes it will mention how you can route or control the action/url path with parameters like so
+
+```
+GET {baseurl}/api/test/{id}
+```
+
+However this is more complicated so the basics will be covered first.
 
 ### Headers
 
