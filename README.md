@@ -29,13 +29,39 @@ Result of calling Test:
 GET {baseurl}/api/test
 ```
 
-In a later section that includes documentation on parameter attributes it will mention how you can route or control the action/url path with parameters like so
+The ability to control the endpoint/action dynamically, which is required for a REST service, is simple to take advantage of. All you need is to utilize formatted strings and provide parameters to the Test method. You can insert values into the action path like so.
 
 ```
-GET {baseurl}/api/test/{id}
+public interface IHttpServiceInterface
+{
+  [Get("/api/{id}/test")]
+  Task Test(int id)
+}
 ```
 
-However this is more complicated so the basics will be covered first.
+Result of calling Test:
+
+```
+GET {baseurl}/api/{id}/test
+```
+
+Where {id} is for example 5 if you make a call to the interface like so service.Test(5).
+
+If you want to use a parameter name differing from the string format indicator then you can utilize [AliasAs](https://github.com/HelloKitty/TypeSafe.Http.Net/blob/master/src/TypeSafe.Http.Net.Metadata/Attributes/AliasAsAttribute.cs) Attribute. This attribute allows to essentially rename a parameter. It works with querystrings, action paths and even UrlEncodedBody serialization.
+
+```
+public interface IHttpServiceInterface
+{
+  [Get("/api/{id}/test")]
+  Task Test([AliasAs("id")] int identifier)
+}
+```
+
+Result of calling Test:
+
+```
+GET {baseurl}/api/{id}/test
+```
 
 ### Headers
 
