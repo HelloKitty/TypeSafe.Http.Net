@@ -195,6 +195,61 @@ Result of calling Test:
 GET {url}/api/test?param1={test}
 ```
 
+### Request Body Content
+
+Sometimes you want to send content in the request body. These are usually data models and it is possible to do this using the various body attributes. One major requirement is that the body content must be the first parameter in the method. See the examples below
+
+```
+public class TestModel
+{
+  //Sent
+  public string TestParameter { get; }
+  
+  //Sent
+  [AliasAs("Param2")]
+  public string TestParameter2 { get; }
+  
+  //Not usually sent
+  private int Test3 { get; }
+}
+```
+
+```
+public interface IHttpServiceInterface
+{
+  [Get("/api/test")]
+  Task Test([UrlEncodedBody]TestModel model)
+}
+```
+
+Result of calling Test:
+
+```
+GET {url}/api/test
+Content-Type: application/x-www-form-urlencoded
+Body: TestParameter={1}&Param2={2}
+```
+
+It is also possible to send just simple string content.
+
+```
+public interface IHttpServiceInterface
+{
+  [Get("/api/test")]
+  Task Test([StringContent] string data)
+}
+```
+
+Result of calling Test:
+
+```
+GET {url}/api/test
+Content-Type: text/plain
+Body: {data}
+```
+
+There are various other serializers that work in a similar fashion. Inlcude serializers like the [Json.NET Serializer Implementation](https://www.nuget.org/packages/TypeSafe.Http.Net.Serializer.JsonNET) and register it to use with [JsonBody](https://github.com/HelloKitty/TypeSafe.Http.Net/blob/master/src/TypeSafe.Http.Net.Metadata/Attributes/Serialization/Concrete/JsonBodyAttribute.cs) Attribute.
+
 ## Setup
 
 To compile or open TypeSafe.Http.Net project you'll first need a couple of things:
