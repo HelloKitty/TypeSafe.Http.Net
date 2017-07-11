@@ -23,7 +23,7 @@ public interface IHttpServiceInterface
 }
 ```
 
-**Result of calling Test:**
+Result of calling Test:
 
 ```
 GET {baseurl}/api/test
@@ -50,7 +50,7 @@ public interface IHttpServiceInterface
 }
 ```
 
-**Result of calling Test:**
+Result of calling Test:
 
 ```
 GET {url}/api/test
@@ -69,7 +69,7 @@ public interface IHttpServiceInterface
 }
 ```
 
-**Result of calling Test:**
+Result of calling Test:
 
 ```
 GET {url}/api/test
@@ -91,7 +91,7 @@ public interface IHttpServiceInterface
 }
 ```
 
-**Result of calling Test:**
+Result of calling Test:
 
 ```
 GET {url}/api/test
