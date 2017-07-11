@@ -108,9 +108,13 @@ To compile or open TypeSafe.Http.Net project you'll first need a couple of thing
 ## Builds
 
 NuGet: [Core Library](https://www.nuget.org/packages/TypeSafe.Http.Net.Core/)
+
 NuGet: [.NET HttpClient Implementation](https://www.nuget.org/packages/TypeSafe.Http.Net.HttpClient/)
+
 NuGet: [Metadata/Attributes Library](https://www.nuget.org/packages/TypeSafe.Http.Net.Metadata/)
+
 NuGet: [JSON.Net (Newtonsoft) Serializer Implementation](https://www.nuget.org/packages/TypeSafe.Http.Net.Serializer.JsonNET/)
+
 
 Myget: [![hellokitty MyGet Build Status](https://www.myget.org/BuildSource/Badge/hellokitty?identifier=772ec112-a0e1-49b7-9d94-ede9ff28945a)](https://www.myget.org/)
 
