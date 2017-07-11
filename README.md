@@ -169,6 +169,22 @@ Some more examples.
 public interface IHttpServiceInterface
 {
   [Get("/api/test")]
+  Task Test([QueryStringParameter] string test)
+}
+```
+
+Result of calling Test:
+
+```
+GET {url}/api/test?test={test}
+```
+
+It is also possible to use the [AliasAs](https://github.com/HelloKitty/TypeSafe.Http.Net/blob/master/src/TypeSafe.Http.Net.Metadata/Attributes/AliasAsAttribute.cs) Attribute to control the queryparameter name.
+
+```
+public interface IHttpServiceInterface
+{
+  [Get("/api/test")]
   Task Test([QueryStringParameter, AliasAs("param1")] string test)
 }
 ```
