@@ -7,8 +7,8 @@ using Castle.DynamicProxy.Contributors;
 
 namespace TypeSafe.Http.Net
 {
-	public sealed class RestServiceBuilder<TRestServiceInterface> : IRestServiceProxyBuilder<TRestServiceInterface>, ISerializationStrategyRegister, IRestClientServiceRegister
-		where TRestServiceInterface : class
+	public sealed class RestServiceBuilder<THttpServiceInterface> : IRestServiceProxyBuilder<THttpServiceInterface>, ISerializationStrategyRegister, IRestClientServiceRegister
+		where THttpServiceInterface : class
 	{
 		/// <summary>
 		/// The client to use.
@@ -20,34 +20,34 @@ namespace TypeSafe.Http.Net
 		static RestServiceBuilder()
 		{
 			//Enforce that it is in an interface.
-			if(!typeof(TRestServiceInterface).GetTypeInfo().IsInterface)
-				throw new NotImplementedException($"Cannot create service proxy for non interfaces. Type: {typeof(TRestServiceInterface).FullName} is not an interface type.");
+			if(!typeof(THttpServiceInterface).GetTypeInfo().IsInterface)
+				throw new NotImplementedException($"Cannot create service proxy for non interfaces. Type: {typeof(THttpServiceInterface).FullName} is not an interface type.");
 		}
 
 		/// <summary>
 		/// Creates a new service builder that can be configured for
 		/// REST/HTTP/Web use.
 		/// </summary>
-		/// <returns>A new builder for the <typeparamref name="TRestServiceInterface"/> service interface.</returns>
-		[Obsolete("Use " + nameof(TypeSafeHttpBuilder<TRestServiceInterface>.Create) + " instead. The " + nameof(RestServiceBuilder<TRestServiceInterface>.Create) + " is deprecated.")]
-		public static RestServiceBuilder<TRestServiceInterface> Create()
+		/// <returns>A new builder for the <typeparamref name="THttpServiceInterface"/> service interface.</returns>
+		[Obsolete("Use " + nameof(TypeSafeHttpBuilder<THttpServiceInterface>.Create) + " instead. The " + nameof(RestServiceBuilder<THttpServiceInterface>.Create) + " is deprecated.")]
+		public static RestServiceBuilder<THttpServiceInterface> Create()
 		{
-			return new RestServiceBuilder<TRestServiceInterface>();
+			return new RestServiceBuilder<THttpServiceInterface>();
 		}
 
-		[Obsolete("Use " + nameof(TypeSafeHttpBuilder<TRestServiceInterface>.Create) + " instead. The " + nameof(RestServiceBuilder<TRestServiceInterface>) + " is deprecated.")]
+		[Obsolete("Use " + nameof(TypeSafeHttpBuilder<THttpServiceInterface>.Create) + " instead. The " + nameof(RestServiceBuilder<THttpServiceInterface>) + " is deprecated.")]
 		internal RestServiceBuilder()
 		{
 			SerializerFactory = new ContentSerializationFactory();
 		}
 
 		/// <inheritdoc />
-		public TRestServiceInterface Build()
+		public THttpServiceInterface Build()
 		{
 			//I can't think of a good reason we shouldn't allow multiple to be built.
 			//so we won't prevent multiple calls to build.
 			return new ProxyGenerator()
-				.CreateInterfaceProxyWithoutTarget<TRestServiceInterface>(new RestServiceCallAsyncCallInterceptor(new RequestContextFactory(new HeaderServiceCallInterpreter()), Client, SerializerFactory, SerializerFactory).ToInterceptor());
+				.CreateInterfaceProxyWithoutTarget<THttpServiceInterface>(new RestServiceCallAsyncCallInterceptor(new RequestContextFactory(new HeaderServiceCallInterpreter()), Client, SerializerFactory, SerializerFactory).ToInterceptor());
 		}
 
 		/// <inheritdoc />
