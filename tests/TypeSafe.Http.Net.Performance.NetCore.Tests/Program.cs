@@ -23,7 +23,7 @@ namespace TypeSafe.Http.Net.Performance.Tests
 
 		public static async Task AsyncMain()
 		{
-			ITestInterface apiInterface = new RestServiceBuilder<ITestInterface>()
+			ITestInterface apiInterface = RestServiceBuilder<ITestInterface>.Create()
 				.RegisterDotNetHttpClient(@"http://localhost.fiddler:5000")
 				.RegisterDefaultSerializers()
 				.RegisterJsonNetSerializer()
@@ -47,7 +47,7 @@ namespace TypeSafe.Http.Net.Performance.Tests
 			[Header("Hello-Base-Y", "Yo", "Another")]
 			[Header("Hello-Base-Y", "Test")]
 			[Header("Hello-Base-Y", "Test2", "Test3", "Test4")]
-			Task<TestReturnModel> TestMethod([JsonBody] TestModel model, [AliasAs("endpoint")] string end);
+			Task<TestReturnModel> TestMethod([JsonBody] TestModel model, string endpoint);
 		}
 
 		[JsonObject]

@@ -24,6 +24,16 @@ namespace TypeSafe.Http.Net
 				throw new NotImplementedException($"Cannot create service proxy for non interfaces. Type: {typeof(TRestServiceInterface).FullName} is not an interface type.");
 		}
 
+		/// <summary>
+		/// Creates a new service builder that can be configured for
+		/// REST/HTTP/Web use.
+		/// </summary>
+		/// <returns>A new builder for the <typeparamref name="TRestServiceInterface"/> service interface.</returns>
+		public static RestServiceBuilder<TRestServiceInterface> Create()
+		{
+			return new RestServiceBuilder<TRestServiceInterface>();
+		}
+
 		public RestServiceBuilder()
 		{
 			SerializerFactory = new ContentSerializationFactory();
