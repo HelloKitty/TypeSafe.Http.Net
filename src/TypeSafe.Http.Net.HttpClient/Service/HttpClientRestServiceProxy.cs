@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace TypeSafe.Http.Net
 {
 	/// <summary>
-	/// <see cref="HttpClient"/> implementation of the <see cref="IRestServiceProxy"/>.
+	/// <see cref="HttpClient"/> implementation of the <see cref="IHttpServiceProxy"/>.
 	/// </summary>
-	public sealed class HttpClientRestServiceProxy : IRestServiceProxy, IDisposable
+	public sealed class HttpClientRestServiceProxy : IHttpServiceProxy, IDisposable
 	{
 		/// <inheritdoc />
 		public string BaseUrl { get; }

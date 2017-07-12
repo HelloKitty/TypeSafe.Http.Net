@@ -13,13 +13,13 @@ namespace TypeSafe.Http.Net
 		/// </summary>
 		private IRequestContextFactory RequestContextFactory { get; }
 
-		private IRestServiceProxy ProxyClient { get; }
+		private IHttpServiceProxy ProxyClient { get; }
 
 		private ISerializationStrategyFactory SerializerFactory { get; }
 
 		private IDeserializationStrategyFactory DeserializerFactory { get; }
 
-		public RestServiceCallAsyncCallInterceptor(IRequestContextFactory requestContextFactory, IRestServiceProxy proxyClient, ISerializationStrategyFactory serializerFactory, IDeserializationStrategyFactory deserializerFactory)
+		public RestServiceCallAsyncCallInterceptor(IRequestContextFactory requestContextFactory, IHttpServiceProxy proxyClient, ISerializationStrategyFactory serializerFactory, IDeserializationStrategyFactory deserializerFactory)
 		{
 			if (requestContextFactory == null) throw new ArgumentNullException(nameof(requestContextFactory));
 			if (proxyClient == null) throw new ArgumentNullException(nameof(proxyClient));

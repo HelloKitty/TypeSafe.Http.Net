@@ -14,6 +14,6 @@ namespace TypeSafe.Http.Net
 		/// Registers a REST client proxy.
 		/// </summary>
 		/// <param name="proxy">The proxy to register.</param>
-		void Register(IRestServiceProxy proxy);
+		void Register(IHttpServiceProxy proxy);
 	}
 }

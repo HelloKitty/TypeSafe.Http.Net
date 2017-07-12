@@ -13,7 +13,7 @@ namespace TypeSafe.Http.Net
 		/// <summary>
 		/// The client to use.
 		/// </summary>
-		private IRestServiceProxy Client { get; set; }
+		private IHttpServiceProxy Client { get; set; }
 
 		private ContentSerializationFactory SerializerFactory { get; }
 
@@ -63,7 +63,7 @@ namespace TypeSafe.Http.Net
 		}
 
 		/// <inheritdoc />
-		public void Register(IRestServiceProxy proxy)
+		public void Register(IHttpServiceProxy proxy)
 		{
 			//TODO: Should we throw if a client is already set?
 			Client = proxy;
