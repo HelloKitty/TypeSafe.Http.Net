@@ -7,7 +7,7 @@ namespace TypeSafe.Http.Net
 	public static class RegisterHttpClientProviderExtensions
 	{
 		public static TClientRegisterationType RegisterDotNetHttpClient<TClientRegisterationType>(this TClientRegisterationType builder, string baseUrl)
-			where TClientRegisterationType : IRestClientServiceRegister
+			where TClientRegisterationType : IHttpClientServiceRegister
 		{
 			if (builder == null) throw new ArgumentNullException(nameof(builder));
 			if (string.IsNullOrWhiteSpace(baseUrl)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(baseUrl));

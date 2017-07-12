@@ -7,7 +7,7 @@ namespace TypeSafe.Http.Net
 	/// <summary>
 	/// Contract for all rest services.
 	/// </summary>
-	public interface IRestService
+	public interface IHttpService
 	{
 		/// <summary>
 		/// The base endpoint of the REST service.

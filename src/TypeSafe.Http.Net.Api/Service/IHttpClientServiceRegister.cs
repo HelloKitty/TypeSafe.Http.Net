@@ -6,12 +6,12 @@ namespace TypeSafe.Http.Net
 {
 	/// <summary>
 	/// Contract for types that allow the registeration of a
-	/// REST client implementation.
+	/// HTTP client implementation.
 	/// </summary>
-	public interface IRestClientServiceRegister
+	public interface IHttpClientServiceRegister
 	{
 		/// <summary>
-		/// Registers a REST client proxy.
+		/// Registers a HTTP client proxy.
 		/// </summary>
 		/// <param name="proxy">The proxy to register.</param>
 		void Register(IHttpServiceProxy proxy);

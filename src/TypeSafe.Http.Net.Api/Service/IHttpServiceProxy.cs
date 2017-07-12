@@ -8,7 +8,7 @@ namespace TypeSafe.Http.Net
 	/// <summary>
 	/// Contract for rest service proxies that mediate between the HTTP application layer and the consuming user.
 	/// </summary>
-	public interface IHttpServiceProxy : IRestService
+	public interface IHttpServiceProxy : IHttpService
 	{
 		/// <summary>
 		/// Sends a request with the designated <see cref="TReturnType"/> with the provided context and the strategy

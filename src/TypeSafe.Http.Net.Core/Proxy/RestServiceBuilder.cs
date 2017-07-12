@@ -7,7 +7,7 @@ using Castle.DynamicProxy.Contributors;
 
 namespace TypeSafe.Http.Net
 {
-	public sealed class RestServiceBuilder<THttpServiceInterface> : IRestServiceProxyBuilder<THttpServiceInterface>, ISerializationStrategyRegister, IRestClientServiceRegister
+	public sealed class RestServiceBuilder<THttpServiceInterface> : IRestServiceProxyBuilder<THttpServiceInterface>, ISerializationStrategyRegister, IHttpClientServiceRegister
 		where THttpServiceInterface : class
 	{
 		/// <summary>
