@@ -8,7 +8,15 @@ TypeSafe.Http.Net is a heavily inspired by Square's [Retrofit library](http://sq
 
 TypeSafe.Http.Net is designed for ease-of-use. Using the modern concept of reflection, metadata or annotations you can prepare a .NET interface type to become a client to a REST/HTTP/Web service.
 
-Firstly to prepare an interface for use in TypeSafe.Http.Net you'll want to add the NuGet Package [TypeSafe.Http.Net.Metadata](https://www.nuget.org/packages/TypeSafe.Http.Net.Metadata/) that contains the attributes/annotations for the project. The Metadata project currently has a requirement of Netstandard1.1 but I am working on reducing this to Netstandard1.0.
+```
+IServiceInterface service = TypeSafeHttpBuilder<IServiceInterface>().Create()
+  .RegisterDefaultSerializers()
+	.RegisterDotNetHttpClient(@"http://localhost:5000")
+	.RegisterJsonNetSerializer()
+	.Build();
+```
+
+To prepare an interface for use in TypeSafe.Http.Net you'll want to add the NuGet Package [TypeSafe.Http.Net.Metadata](https://www.nuget.org/packages/TypeSafe.Http.Net.Metadata/) that contains the attributes/annotations for the project. The Metadata project currently has a requirement of Netstandard1.1 but I am working on reducing this to Netstandard1.0.
 
 ### Http Methods
 
