@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TypeSafe.Http.Net
 {
-	public class RestRequestContext : IRestClientRequestContext
+	public class HttpRequestContext : IHttpClientRequestContext
 	{
 		/// <inheritdoc />
 		public string ActionPath { get; }
@@ -19,7 +19,7 @@ namespace TypeSafe.Http.Net
 		/// <inheritdoc />
 		public IRequestBodyContext BodyContext { get; }
 
-		public RestRequestContext(HttpMethod requestMethod, string builtActionPath, IEnumerable<IRequestHeader> headers, IRequestBodyContext bodyContext)
+		public HttpRequestContext(HttpMethod requestMethod, string builtActionPath, IEnumerable<IRequestHeader> headers, IRequestBodyContext bodyContext)
 		{
 			if (requestMethod == null) throw new ArgumentNullException(nameof(requestMethod));
 			if (headers == null) throw new ArgumentNullException(nameof(headers));

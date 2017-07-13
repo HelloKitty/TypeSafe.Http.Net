@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace TypeSafe.Http.Net
 {
 	/// <summary>
-	/// Contract for rest service proxies that mediate between the HTTP application layer and the consuming user.
+	/// Contract for HTTP service proxies that mediate between the HTTP application layer and the consuming user.
 	/// </summary>
 	public interface IHttpServiceProxy : IHttpService
 	{
@@ -19,7 +19,7 @@ namespace TypeSafe.Http.Net
 		/// <param name="serializer"></param>
 		/// <param name="deserializationFactory"></param>
 		/// <returns>The a future promise for a deserialized return data.</returns>
-		Task<TReturnType> Send<TReturnType>(IRestClientRequestContext requestContext, IRequestSerializationStrategy serializer, IDeserializationStrategyFactory deserializationFactory);
+		Task<TReturnType> Send<TReturnType>(IHttpClientRequestContext requestContext, IRequestSerializationStrategy serializer, IDeserializationStrategyFactory deserializationFactory);
 
 		/// <summary>
 		/// Sends a request with the designated <see cref="TReturnType"/> with the provided context.
@@ -28,7 +28,7 @@ namespace TypeSafe.Http.Net
 		/// <param name="requestContext">The context of the request.</param>
 		/// <param name="deserializationFactory"></param>
 		/// <returns>The a future promise for a deserialized return data.</returns>
-		Task<TReturnType> Send<TReturnType>(IRestClientRequestContext requestContext, IDeserializationStrategyFactory deserializationFactory);
+		Task<TReturnType> Send<TReturnType>(IHttpClientRequestContext requestContext, IDeserializationStrategyFactory deserializationFactory);
 
 		/// <summary>
 		/// Sends a request with the provided context with no response data.
@@ -36,13 +36,13 @@ namespace TypeSafe.Http.Net
 		/// <param name="requestContext">The context of the request.</param>
 		/// <param name="serializer"></param>
 		/// <returns>A future.</returns>
-		Task Send(IRestClientRequestContext requestContext, IRequestSerializationStrategy serializer);
+		Task Send(IHttpClientRequestContext requestContext, IRequestSerializationStrategy serializer);
 
 		/// <summary>
 		/// Sends a request with the provided context with no response data.
 		/// </summary>
 		/// <param name="requestContext">The context of the request.</param>
 		/// <returns>A future.</returns>
-		Task Send(IRestClientRequestContext requestContext);
+		Task Send(IHttpClientRequestContext requestContext);
 	}
 }

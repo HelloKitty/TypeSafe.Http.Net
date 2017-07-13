@@ -29,7 +29,7 @@ namespace TypeSafe.Http.Net
 		}
 
 		/// <inheritdoc />
-		public IRestClientRequestContext CreateContext(IServiceCallContext callContext, IServiceCallParametersContext parameterContext)
+		public IHttpClientRequestContext CreateContext(IServiceCallContext callContext, IServiceCallParametersContext parameterContext)
 		{
 			if (callContext == null) throw new ArgumentNullException(nameof(callContext));
 			if (parameterContext == null) throw new ArgumentNullException(nameof(parameterContext));
@@ -48,7 +48,7 @@ namespace TypeSafe.Http.Net
 					parameterContext.HasParameters ? BuildFormattedActionPath(httpMethod.Path, callContext, parameterContext) : httpMethod.Path);
 		}
 
-		private IRestClientRequestContext BuildNonGetRequest(HttpMethod httpMethod, IServiceCallContext callContext, IServiceCallParametersContext parameterContext, string baseActionPath)
+		private IHttpClientRequestContext BuildNonGetRequest(HttpMethod httpMethod, IServiceCallContext callContext, IServiceCallParametersContext parameterContext, string baseActionPath)
 		{
 			//We don't currently support dynamic header values so
 			IEnumerable<IRequestHeader> headers = HeaderInterpreterService.ProduceFromContext(callContext, new NoParametersContext());
@@ -60,18 +60,18 @@ namespace TypeSafe.Http.Net
 
 				//It should have the body content attribute, which is required explictly, that indicates how it should be serialized.
 				if(first.GetCustomAttribute<BodyContentAttribute>() != null)
-					return new RestRequestContext(httpMethod, baseActionPath, headers, new DefaultBodyContext(parameterContext.Parameters.First(), first.GetCustomAttribute<BodyContentAttribute>().GetType()));
+					return new HttpRequestContext(httpMethod, baseActionPath, headers, new DefaultBodyContext(parameterContext.Parameters.First(), first.GetCustomAttribute<BodyContentAttribute>().GetType()));
 			}
 
 			//If it has no parameters then we should return a context with no body.
-			return new RestRequestContext(httpMethod, baseActionPath, headers, new NoBodyContext());
+			return new HttpRequestContext(httpMethod, baseActionPath, headers, new NoBodyContext());
 		}
 
-		public IRestClientRequestContext BuildGetRequest(IServiceCallContext callContext, string baseActionPath)
+		public IHttpClientRequestContext BuildGetRequest(IServiceCallContext callContext, string baseActionPath)
 		{
 			IEnumerable<IRequestHeader> headers = HeaderInterpreterService.ProduceFromContext(callContext, new NoParametersContext());
 
-			return new GetRestRequestContext(baseActionPath, headers);
+			return new GetHttpRequestContext(baseActionPath, headers);
 		}
 
 		private string BuildFormattedActionPath(string baseActionPath, IServiceCallContext callContext, IServiceCallParametersContext parameters)

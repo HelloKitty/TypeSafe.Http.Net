@@ -9,17 +9,17 @@ namespace TypeSafe.Http.Net
 	/// <summary>
 	/// <see cref="HttpClient"/> implementation of the <see cref="IHttpServiceProxy"/>.
 	/// </summary>
-	public sealed class HttpClientRestServiceProxy : IHttpServiceProxy, IDisposable
+	public sealed class HttpClientHttpServiceProxy : IHttpServiceProxy, IDisposable
 	{
 		/// <inheritdoc />
 		public string BaseUrl { get; }
 
 		/// <summary>
-		/// Managed <see cref="HttpClient"/> to use for REST service communication.
+		/// Managed <see cref="HttpClient"/> to use for HTTP service communication.
 		/// </summary>
 		private HttpClient Client { get; }
 
-		public HttpClientRestServiceProxy(string baseUrl)
+		public HttpClientHttpServiceProxy(string baseUrl)
 		{
 			//TODO: Better checcking that this is a valid address
 			if (string.IsNullOrWhiteSpace(baseUrl)) throw new ArgumentException($"Provided {nameof(baseUrl)} cannot be null or whitespace. It must be a valid address.", nameof(baseUrl));
@@ -29,7 +29,7 @@ namespace TypeSafe.Http.Net
 		}
 
 		/// <inheritdoc />
-		public async Task<TReturnType> Send<TReturnType>(IRestClientRequestContext requestContext, IRequestSerializationStrategy serializer, IDeserializationStrategyFactory deserializationFactory)
+		public async Task<TReturnType> Send<TReturnType>(IHttpClientRequestContext requestContext, IRequestSerializationStrategy serializer, IDeserializationStrategyFactory deserializationFactory)
 		{
 			if (requestContext == null) throw new ArgumentNullException(nameof(requestContext));
 			if (serializer == null) throw new ArgumentNullException(nameof(serializer));
@@ -50,7 +50,7 @@ namespace TypeSafe.Http.Net
 		}
 
 		/// <inheritdoc />
-		public async Task<TReturnType> Send<TReturnType>(IRestClientRequestContext requestContext, IDeserializationStrategyFactory deserializationFactory)
+		public async Task<TReturnType> Send<TReturnType>(IHttpClientRequestContext requestContext, IDeserializationStrategyFactory deserializationFactory)
 		{
 			if (requestContext == null) throw new ArgumentNullException(nameof(requestContext));
 
@@ -61,14 +61,14 @@ namespace TypeSafe.Http.Net
 		}
 
 		/// <inheritdoc />
-		public async Task Send(IRestClientRequestContext requestContext, IRequestSerializationStrategy serializer)
+		public async Task Send(IHttpClientRequestContext requestContext, IRequestSerializationStrategy serializer)
 		{
 			//Make sure to dipose the response
 			(await SendHttpRequest(requestContext, serializer)).Dispose();
 		}
 
 		/// <inheritdoc />
-		public async Task Send(IRestClientRequestContext requestContext)
+		public async Task Send(IHttpClientRequestContext requestContext)
 		{
 			//Send a request WITHOUT serialization which means no body.
 			//Make sure to dipose the response
@@ -76,7 +76,7 @@ namespace TypeSafe.Http.Net
 		}
 
 		//TODO: Document
-		private async Task<HttpResponseMessage> SendHttpRequest(IRestClientRequestContext requestContext, IRequestSerializationStrategy serializer)
+		private async Task<HttpResponseMessage> SendHttpRequest(IHttpClientRequestContext requestContext, IRequestSerializationStrategy serializer)
 		{
 			if (requestContext == null) throw new ArgumentNullException(nameof(requestContext));
 			if (serializer == null) throw new ArgumentNullException(nameof(serializer));
@@ -91,7 +91,7 @@ namespace TypeSafe.Http.Net
 		}
 
 		//TODO: Document
-		private async Task<HttpResponseMessage> SendHttpRequest(IRestClientRequestContext requestContext)
+		private async Task<HttpResponseMessage> SendHttpRequest(IHttpClientRequestContext requestContext)
 		{
 			if (requestContext == null) throw new ArgumentNullException(nameof(requestContext));
 
@@ -103,12 +103,12 @@ namespace TypeSafe.Http.Net
 			}
 		}
 
-		private string BuildFullUrlPath(IRestClientRequestContext requestContext)
+		private string BuildFullUrlPath(IHttpClientRequestContext requestContext)
 		{
 			return $"{BaseUrl}{requestContext.ActionPath}";
 		}
 
-		private async Task<HttpResponseMessage> SendBaseRequest(IRestClientRequestContext requestContext, HttpRequestMessage request)
+		private async Task<HttpResponseMessage> SendBaseRequest(IHttpClientRequestContext requestContext, HttpRequestMessage request)
 		{
 			//Don't use a using here, the caller has to be responsible for diposing it because they own it, not us. They may need to use it.
 			HttpResponseMessage response = await Client.SendAsync(request);
@@ -120,7 +120,7 @@ namespace TypeSafe.Http.Net
 			return response;
 		}
 
-		private static void WriteHeaders(IRestClientRequestContext requestContext, HttpRequestMessage request)
+		private static void WriteHeaders(IHttpClientRequestContext requestContext, HttpRequestMessage request)
 		{
 			//We need to add the headers. We expect that they are already constructed with any formatted or inserted values already inserted.
 			foreach (IRequestHeader header in requestContext.RequestHeaders)
@@ -130,7 +130,7 @@ namespace TypeSafe.Http.Net
 			}
 		}
 
-		private static void WriteBodyContent(IRestClientRequestContext requestContext, IRequestSerializationStrategy serializer, HttpRequestMessage request)
+		private static void WriteBodyContent(IHttpClientRequestContext requestContext, IRequestSerializationStrategy serializer, HttpRequestMessage request)
 		{
 			//Write the body first to avoid messing with the headers
 			if (requestContext.BodyContext.HasBody)

@@ -5,9 +5,9 @@ using System.Text;
 
 namespace TypeSafe.Http.Net
 {
-	public sealed class GetRestRequestContext : RestRequestContext
+	public sealed class GetHttpRequestContext : HttpRequestContext
 	{
-		public GetRestRequestContext(string builtActionPath, IEnumerable<IRequestHeader> headers)
+		public GetHttpRequestContext(string builtActionPath, IEnumerable<IRequestHeader> headers)
 			: base(HttpMethod.Get, builtActionPath, headers, NoBodyContext.Instance)
 		{
 

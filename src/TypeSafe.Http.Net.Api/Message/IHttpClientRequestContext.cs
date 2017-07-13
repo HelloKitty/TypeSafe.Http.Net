@@ -5,9 +5,9 @@ using System.Text;
 namespace TypeSafe.Http.Net
 {
 	/// <summary>
-	/// Context for a REST service request.
+	/// Context for a HTTP service request.
 	/// </summary>
-	public interface IRestClientRequestContext
+	public interface IHttpClientRequestContext
 	{
 		/// <summary>
 		/// The action path to use.

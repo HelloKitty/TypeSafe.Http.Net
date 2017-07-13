@@ -13,7 +13,7 @@ namespace TypeSafe.Http.Net
 			if (string.IsNullOrWhiteSpace(baseUrl)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(baseUrl));
 
 			//Just register the HttpClient in the non-fluent API.
-			builder.Register(new HttpClientRestServiceProxy(baseUrl));
+			builder.Register(new HttpClientHttpServiceProxy(baseUrl));
 
 			//fluently return
 			return builder;

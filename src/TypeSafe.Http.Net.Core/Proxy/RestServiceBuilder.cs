@@ -7,7 +7,7 @@ using Castle.DynamicProxy.Contributors;
 
 namespace TypeSafe.Http.Net
 {
-	public sealed class RestServiceBuilder<THttpServiceInterface> : IRestServiceProxyBuilder<THttpServiceInterface>, ISerializationStrategyRegister, IHttpClientServiceRegister
+	public sealed class RestServiceBuilder<THttpServiceInterface> : IHttpServiceProxyBuilder<THttpServiceInterface>, ISerializationStrategyRegister, IHttpClientServiceRegister
 		where THttpServiceInterface : class
 	{
 		/// <summary>
@@ -47,7 +47,7 @@ namespace TypeSafe.Http.Net
 			//I can't think of a good reason we shouldn't allow multiple to be built.
 			//so we won't prevent multiple calls to build.
 			return new ProxyGenerator()
-				.CreateInterfaceProxyWithoutTarget<THttpServiceInterface>(new RestServiceCallAsyncCallInterceptor(new RequestContextFactory(new HeaderServiceCallInterpreter()), Client, SerializerFactory, SerializerFactory).ToInterceptor());
+				.CreateInterfaceProxyWithoutTarget<THttpServiceInterface>(new HttpServiceCallAsyncCallInterceptor(new RequestContextFactory(new HeaderServiceCallInterpreter()), Client, SerializerFactory, SerializerFactory).ToInterceptor());
 		}
 
 		/// <inheritdoc />

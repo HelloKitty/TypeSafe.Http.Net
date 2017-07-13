@@ -6,7 +6,7 @@ using Castle.DynamicProxy;
 
 namespace TypeSafe.Http.Net
 {
-	public sealed class RestServiceCallAsyncCallInterceptor : IAsyncInterceptor
+	public sealed class HttpServiceCallAsyncCallInterceptor : IAsyncInterceptor
 	{
 		/// <summary>
 		/// The factory for building contexts.
@@ -19,7 +19,7 @@ namespace TypeSafe.Http.Net
 
 		private IDeserializationStrategyFactory DeserializerFactory { get; }
 
-		public RestServiceCallAsyncCallInterceptor(IRequestContextFactory requestContextFactory, IHttpServiceProxy proxyClient, ISerializationStrategyFactory serializerFactory, IDeserializationStrategyFactory deserializerFactory)
+		public HttpServiceCallAsyncCallInterceptor(IRequestContextFactory requestContextFactory, IHttpServiceProxy proxyClient, ISerializationStrategyFactory serializerFactory, IDeserializationStrategyFactory deserializerFactory)
 		{
 			if (requestContextFactory == null) throw new ArgumentNullException(nameof(requestContextFactory));
 			if (proxyClient == null) throw new ArgumentNullException(nameof(proxyClient));
@@ -48,7 +48,7 @@ namespace TypeSafe.Http.Net
 
 		public async Task AsyncNoReturn(IInvocation invocation)
 		{
-			IRestClientRequestContext context = RequestContextFactory.CreateContext(new CastleCoreInvocationCallContextAdapter(invocation),
+			IHttpClientRequestContext context = RequestContextFactory.CreateContext(new CastleCoreInvocationCallContextAdapter(invocation),
 				new CastleCoreInvocationParametersContextAdapter(invocation));
 
 			//If it has no body we don't need to provide or produce serializers for it.
@@ -68,7 +68,7 @@ namespace TypeSafe.Http.Net
 		public async Task<TResult> AsyncWithReturn<TResult>(IInvocation invocation)
 		{
 			//TODO: Handle return data deserialization.
-			IRestClientRequestContext context = RequestContextFactory.CreateContext(new CastleCoreInvocationCallContextAdapter(invocation),
+			IHttpClientRequestContext context = RequestContextFactory.CreateContext(new CastleCoreInvocationCallContextAdapter(invocation),
 				new CastleCoreInvocationParametersContextAdapter(invocation));
 
 			//If it has no body we don't need to provide or produce serializers for it.
