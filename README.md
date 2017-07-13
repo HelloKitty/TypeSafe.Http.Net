@@ -4,6 +4,22 @@ TypeSafe.Http.Net is an automatic type-safe REST web client. Bringing type safet
 
 TypeSafe.Http.Net is a heavily inspired by Square's [Retrofit library](http://square.github.io/retrofit/) and Paul Betts' [Refit library](https://github.com/paulcbetts/refit). It turns your REST or ASP.NET Web APIs into type-safe async RPCs (remote procedural calls):
 
+## Features
+
+- [x] Type Headers
+- [x] Method Headers
+- [ ] Dynamic Header Values/Formatting
+- [x] Action Paths
+- [x] Dynamic Action Paths
+- [x] JSON Serialization/Deserialization
+- [x] URL Encoded Body Serialization/Deserialization
+- [ ] URL Encoded Dictionary Serialization/Deserialization
+- [ ] Protobuf Serialization/Deserialization
+- [ ] Multipart
+- [ ] Stream Content
+- [x] [.NET HttpClient Implementation](https://msdn.microsoft.com/en-us/library/system.net.http.httpclient(v=vs.118).aspx)
+- [ ] [RestSharp Implementation](https://github.com/restsharp/RestSharp)
+
 ## How to Use
 
 TypeSafe.Http.Net is designed for ease-of-use. Using the modern concept of reflection, metadata or annotations you can prepare a .NET interface type to become a client to a REST/HTTP/Web service.
