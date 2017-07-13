@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.1</TargetFramework>
+    <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <RootNamespace>TypeSafe.Http.Net</RootNamespace>
     <Description>TypeSafe.Http.Net is a type safe REST/HTTP/Web framework that automagically allows you to make service calls to servers through simple annotated interfaces.
 
@@ -21,11 +21,17 @@ The API library consists exclusively of the interfaces that represent the API of
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.1\TypeSafe.Http.Net.Api.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net45\TypeSafe.Http.Net.Api.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile></DocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <Reference Include="System.Net.Http, Version=4.0.0.0, PublicKeyToken=b03f5f7f11d50a3a">
+    </Reference>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TypeSafe.HTTP.NET.Metadata\TypeSafe.Http.Net.Metadata.csproj" />

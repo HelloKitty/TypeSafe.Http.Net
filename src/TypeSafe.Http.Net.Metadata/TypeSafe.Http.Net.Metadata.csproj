@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.1</TargetFramework>
+    <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <AssemblyName>TypeSafe.Http.Net.Metadata</AssemblyName>
     <RootNamespace>TypeSafe.Http.Net</RootNamespace>
     <Authors>https://github.com/HelloKitty</Authors>
@@ -18,8 +18,14 @@ This library contains the metadata/attributes/annotations that will be used to m
     <PackageTags>Refit Rest Client .NET Retrofit TypeSafe HTTP Type Safe</PackageTags>
   </PropertyGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <Reference Include="System.Net.Http, Version=4.0.0.0, PublicKeyToken=b03f5f7f11d50a3a">
+    </Reference>
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.1\TypeSafe.Http.Net.Metadata.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net46\TypeSafe.Http.Net.Metadata.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

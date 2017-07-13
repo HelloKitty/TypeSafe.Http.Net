@@ -6,6 +6,8 @@ TypeSafe.Http.Net is a heavily inspired by Square's [Retrofit library](http://sq
 
 ## Features
 - [ ] **Performance** (library is not yet profiled/optimized)
+- [x] **Netstandard1.4**
+- [x] **Net45**
 - [x] Type Headers
 - [x] Method Headers
 - [ ] Dynamic Header Values/Formatting
