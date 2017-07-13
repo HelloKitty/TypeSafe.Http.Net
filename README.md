@@ -4,11 +4,27 @@ TypeSafe.Http.Net is an automatic type-safe REST web client. Bringing type safet
 
 TypeSafe.Http.Net is a heavily inspired by Square's [Retrofit library](http://square.github.io/retrofit/) and Paul Betts' [Refit library](https://github.com/paulcbetts/refit). It turns your REST or ASP.NET Web APIs into type-safe async RPCs (remote procedural calls):
 
+## Features
+- [ ] **Performance** (library is not yet profiled/optimized)
+- [x] Type Headers
+- [x] Method Headers
+- [ ] Dynamic Header Values/Formatting
+- [x] Action Paths
+- [x] Dynamic Action Paths
+- [x] JSON Serialization/Deserialization
+- [x] URL Encoded Body Serialization/Deserialization
+- [ ] URL Encoded Dictionary Serialization/Deserialization
+- [x] Protobuf Serialization/Deserialization
+- [ ] Multipart
+- [ ] Stream Content
+- [x] [.NET HttpClient Implementation](https://msdn.microsoft.com/en-us/library/system.net.http.httpclient(v=vs.118).aspx)
+- [ ] [RestSharp Implementation](https://github.com/restsharp/RestSharp)
+
 ## How to Use
 
 TypeSafe.Http.Net is designed for ease-of-use. Using the modern concept of reflection, metadata or annotations you can prepare a .NET interface type to become a client to a REST/HTTP/Web service.
 
-```
+```csharp
 IServiceInterface service = TypeSafeHttpBuilder<IServiceInterface>().Create()
   .RegisterDefaultSerializers()
 	.RegisterDotNetHttpClient(@"http://localhost:5000")
@@ -23,7 +39,7 @@ To prepare an interface for use in TypeSafe.Http.Net you'll want to add the NuGe
 Once included you will be able to reference all of the standard attributes in the TypeSafe.Http.Net project. Of particular importance you'll want to see the [HttpMethod Attributes](https://github.com/HelloKitty/TypeSafe.Http.Net/tree/master/src/TypeSafe.Http.Net.Metadata/Attributes/Methods). For out first example we will be using a GET request.
 
 
-```
+```csharp
 public interface IHttpServiceInterface
 {
   [Get("/api/test")]
@@ -39,7 +55,7 @@ GET {baseurl}/api/test
 
 The ability to control the endpoint/action dynamically, which is required for a REST service, is simple to take advantage of. All you need is to utilize formatted strings and provide parameters to the Test method. You can insert values into the action path like so.
 
-```
+```csharp
 public interface IHttpServiceInterface
 {
   [Get("/api/{id}/test")]
@@ -57,7 +73,7 @@ Where {id} is for example 5 if you make a call to the interface like so service.
 
 If you want to use a parameter name differing from the string format indicator then you can utilize [AliasAs](https://github.com/HelloKitty/TypeSafe.Http.Net/blob/master/src/TypeSafe.Http.Net.Metadata/Attributes/AliasAsAttribute.cs) Attribute. This attribute allows to essentially rename a parameter. It works with querystrings, action paths and even UrlEncodedBody serialization.
 
-```
+```csharp
 public interface IHttpServiceInterface
 {
   [Get("/api/{id}/test")]
@@ -75,7 +91,7 @@ GET {baseurl}/api/{id}/test
 
 If we wanted to add static headers to the all the methods on this service interface we can use another attribute called [Header](https://github.com/HelloKitty/TypeSafe.Http.Net/blob/master/src/TypeSafe.Http.Net.Metadata/Attributes/HeaderAttribute.cs).
 
-```
+```csharp
 [Header("User-Agent", "TestClient 1.0")]
 public interface IHttpServiceInterface
 {
@@ -93,7 +109,7 @@ User-Agent: TestClient 1.0
 
 If you want to add a header to only a specifc method and not all methods on a service then you can annotate that specific method instead.
 
-```
+```csharp
 [Header("User-Agent", "TestClient 1.0")]
 public interface IHttpServiceInterface
 {
@@ -113,7 +129,7 @@ Custom-Header: Test1, Test2
 
 It is also ok to have multiple of the same header annotation. The values will be combined however the order in which these header values will appear is not defined. Make no expectation of that.
 
-```
+```csharp
 [Header("User-Agent", "TestClient 1.0")]
 [Header("Custom-Header", "Test5", "Test6")]
 public interface IHttpServiceInterface
@@ -139,7 +155,7 @@ Dynamic headers are a planned feature but not yet supported.
 
 TypeSafe.Http.Net also supports querystring parameters in multiple ways. The most basic way is a static querystring parameter.
 
-```
+```csharp
 public interface IHttpServiceInterface
 {
   [Get("/api/test?param1=1&param2=2")]
@@ -155,7 +171,7 @@ GET {url}/api/test?param1=1&param2=2
 
 Another way is to utilize the [QueryStringParameter](https://github.com/HelloKitty/TypeSafe.Http.Net/blob/master/src/TypeSafe.Http.Net.Metadata/Attributes/Serialization/QueryStringParameterAttribute.cs) attribute like the following.
 
-```
+```csharp
 public interface IHttpServiceInterface
 {
   [Get("/api/test?param1=1&param2=2")]
@@ -173,7 +189,7 @@ GET {url}/api/test?param1=1&param2=2&t={t}
 
 Some more examples.
 
-```
+```csharp
 public interface IHttpServiceInterface
 {
   [Get("/api/test")]
@@ -189,7 +205,7 @@ GET {url}/api/test?test={test}
 
 It is also possible to use the [AliasAs](https://github.com/HelloKitty/TypeSafe.Http.Net/blob/master/src/TypeSafe.Http.Net.Metadata/Attributes/AliasAsAttribute.cs) Attribute to control the queryparameter name.
 
-```
+```csharp
 public interface IHttpServiceInterface
 {
   [Get("/api/test")]
@@ -207,7 +223,7 @@ GET {url}/api/test?param1={test}
 
 Sometimes you want to send content in the request body. These are usually data models and it is possible to do this using the various body attributes. One major requirement is that the body content must be the first parameter in the method. See the examples below
 
-```
+```csharp
 public class TestModel
 {
   //Sent
@@ -222,7 +238,7 @@ public class TestModel
 }
 ```
 
-```
+```csharp
 public interface IHttpServiceInterface
 {
   [Get("/api/test")]
@@ -240,7 +256,7 @@ Body: TestParameter={1}&Param2={2}
 
 It is also possible to send just simple string content.
 
-```
+```csharp
 public interface IHttpServiceInterface
 {
   [Get("/api/test")]
