@@ -44,7 +44,13 @@ namespace TypeSafe.Http.Net
 			RequestMessage.Content = new ByteArrayContent(bytes);
 			RequestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentTypeValue);
 
+#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2 || NETSTANDARD1_3 || NETSTANDARD1_4 || NET46
 			return Task.CompletedTask;
+#endif
+
+#if NET45
+			return Task.FromResult(0);
+#endif
 		}
 
 		/// <inheritdoc />
@@ -54,7 +60,13 @@ namespace TypeSafe.Http.Net
 			RequestMessage.Content = new StringContent(content);
 			RequestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentTypeValue);
 
+#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2 || NETSTANDARD1_3 || NETSTANDARD1_4 || NET46
 			return Task.CompletedTask;
+#endif
+
+#if NET45
+			return Task.FromResult(0);
+#endif
 		}
 	}
 }
