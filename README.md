@@ -14,7 +14,7 @@ TypeSafe.Http.Net is a heavily inspired by Square's [Retrofit library](http://sq
 - [x] JSON Serialization/Deserialization
 - [x] URL Encoded Body Serialization/Deserialization
 - [ ] URL Encoded Dictionary Serialization/Deserialization
-- [ ] Protobuf Serialization/Deserialization
+- [x] Protobuf Serialization/Deserialization
 - [ ] Multipart
 - [ ] Stream Content
 - [x] [.NET HttpClient Implementation](https://msdn.microsoft.com/en-us/library/system.net.http.httpclient(v=vs.118).aspx)
