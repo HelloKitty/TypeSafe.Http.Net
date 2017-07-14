@@ -29,13 +29,13 @@ namespace TypeSafe.Http.Net
 		/// REST/HTTP/Web use.
 		/// </summary>
 		/// <returns>A new builder for the <typeparamref name="THttpServiceInterface"/> service interface.</returns>
-		[Obsolete("Use " + nameof(TypeSafeHttpBuilder<THttpServiceInterface>.Create) + " instead. The " + nameof(RestServiceBuilder<THttpServiceInterface>.Create) + " is deprecated.")]
+		[Obsolete("Use " + nameof(TypeSafeHttpBuilder<THttpServiceInterface>) + nameof(TypeSafeHttpBuilder<THttpServiceInterface>.Create) + " instead. The " + nameof(RestServiceBuilder<THttpServiceInterface>) + nameof(RestServiceBuilder<THttpServiceInterface>.Create) + " is deprecated.")]
 		public static RestServiceBuilder<THttpServiceInterface> Create()
 		{
 			return new RestServiceBuilder<THttpServiceInterface>();
 		}
 
-		[Obsolete("Use " + nameof(TypeSafeHttpBuilder<THttpServiceInterface>.Create) + " instead. The " + nameof(RestServiceBuilder<THttpServiceInterface>) + " is deprecated.")]
+		[Obsolete("Use " + nameof(TypeSafeHttpBuilder<THttpServiceInterface>) + nameof(TypeSafeHttpBuilder<THttpServiceInterface>.Create) + " instead. The " + nameof(RestServiceBuilder<THttpServiceInterface>) + nameof(RestServiceBuilder<THttpServiceInterface>.Create) + " is deprecated.")]
 		internal RestServiceBuilder()
 		{
 			SerializerFactory = new ContentSerializationFactory();
