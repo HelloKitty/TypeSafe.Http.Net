@@ -9,15 +9,15 @@ namespace TypeSafe.Http.Net
 	/// <summary>
 	/// <see cref="HttpClient"/> implementation of the <see cref="IHttpServiceProxy"/>.
 	/// </summary>
-	public sealed class HttpClientHttpServiceProxy : IHttpServiceProxy, IDisposable
+	public class HttpClientHttpServiceProxy : IHttpServiceProxy, IDisposable
 	{
 		/// <inheritdoc />
-		public string BaseUrl { get; }
+		public virtual string BaseUrl { get; }
 
 		/// <summary>
 		/// Managed <see cref="HttpClient"/> to use for HTTP service communication.
 		/// </summary>
-		private HttpClient Client { get; }
+		protected HttpClient Client { get; }
 
 		public HttpClientHttpServiceProxy(string baseUrl)
 		{
@@ -25,6 +25,15 @@ namespace TypeSafe.Http.Net
 			if (string.IsNullOrWhiteSpace(baseUrl)) throw new ArgumentException($"Provided {nameof(baseUrl)} cannot be null or whitespace. It must be a valid address.", nameof(baseUrl));
 
 			BaseUrl = baseUrl;
+			Client = new HttpClient() { BaseAddress = new Uri(BaseUrl) };
+		}
+
+		/// <summary>
+		/// Constructor for child types to handle BaseUrl initialization.
+		/// </summary>
+		protected HttpClientHttpServiceProxy()
+		{
+			//no URI
 			Client = new HttpClient();
 		}
 
@@ -105,10 +114,18 @@ namespace TypeSafe.Http.Net
 
 		private string BuildFullUrlPath(IHttpClientRequestContext requestContext)
 		{
-			return $"{BaseUrl}{requestContext.ActionPath}";
+			return requestContext.ActionPath;
 		}
 
-		private async Task<HttpResponseMessage> SendBaseRequest(IHttpClientRequestContext requestContext, HttpRequestMessage request)
+		//Made overridable so implementations can change how the requet is sent.
+		/// <summary>
+		/// This method sends a request through the <see cref="Client"/> using the provided built
+		/// <see cref="HttpRequestMessage"/> and the <see cref="IHttpClientRequestContext"/>.
+		/// </summary>
+		/// <param name="requestContext"></param>
+		/// <param name="request"></param>
+		/// <returns>A future response.</returns>
+		protected virtual async Task<HttpResponseMessage> SendBaseRequest(IHttpClientRequestContext requestContext, HttpRequestMessage request)
 		{
 			//Don't use a using here, the caller has to be responsible for diposing it because they own it, not us. They may need to use it.
 			HttpResponseMessage response = await Client.SendAsync(request);
