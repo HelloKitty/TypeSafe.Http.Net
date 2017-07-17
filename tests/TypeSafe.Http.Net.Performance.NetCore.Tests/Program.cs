@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Net;
 
 namespace TypeSafe.Http.Net.Performance.Tests
 {
@@ -23,8 +24,9 @@ namespace TypeSafe.Http.Net.Performance.Tests
 
 		public static async Task AsyncMain()
 		{
+
 			ITestInterface apiInterface = RestServiceBuilder<ITestInterface>.Create()
-				.RegisterDotNetHttpClient(@"http://localhost.fiddler:5000")
+				.RegisterDotNetHttpClient(Task.FromResult(@"http://localhost:5000"))
 				.RegisterDefaultSerializers()
 				.RegisterJsonNetSerializer()
 				.Build();

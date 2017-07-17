@@ -9,33 +9,15 @@ namespace TypeSafe.Http.Net
 	/// <summary>
 	/// <see cref="HttpClient"/> implementation of the <see cref="IHttpServiceProxy"/>.
 	/// </summary>
-	public class HttpClientHttpServiceProxy : IHttpServiceProxy, IDisposable
+	public abstract class HttpClientHttpServiceProxy : IHttpServiceProxy, IDisposable
 	{
 		/// <inheritdoc />
-		public virtual string BaseUrl { get; }
+		public abstract string BaseUrl { get; }
 
 		/// <summary>
 		/// Managed <see cref="HttpClient"/> to use for HTTP service communication.
 		/// </summary>
-		protected HttpClient Client { get; }
-
-		public HttpClientHttpServiceProxy(string baseUrl)
-		{
-			//TODO: Better checcking that this is a valid address
-			if (string.IsNullOrWhiteSpace(baseUrl)) throw new ArgumentException($"Provided {nameof(baseUrl)} cannot be null or whitespace. It must be a valid address.", nameof(baseUrl));
-
-			BaseUrl = baseUrl;
-			Client = new HttpClient() { BaseAddress = new Uri(BaseUrl) };
-		}
-
-		/// <summary>
-		/// Constructor for child types to handle BaseUrl initialization.
-		/// </summary>
-		protected HttpClientHttpServiceProxy()
-		{
-			//no URI
-			Client = new HttpClient();
-		}
+		protected abstract HttpClient Client { get; }
 
 		/// <inheritdoc />
 		public async Task<TReturnType> Send<TReturnType>(IHttpClientRequestContext requestContext, IRequestSerializationStrategy serializer, IDeserializationStrategyFactory deserializationFactory)
@@ -127,6 +109,9 @@ namespace TypeSafe.Http.Net
 		/// <returns>A future response.</returns>
 		protected virtual async Task<HttpResponseMessage> SendBaseRequest(IHttpClientRequestContext requestContext, HttpRequestMessage request)
 		{
+			if(Client == null)
+				throw new InvalidOperationException($"The {nameof(HttpClient)} property {nameof(Client)} is null.");
+
 			//Don't use a using here, the caller has to be responsible for diposing it because they own it, not us. They may need to use it.
 			HttpResponseMessage response = await Client.SendAsync(request);
 

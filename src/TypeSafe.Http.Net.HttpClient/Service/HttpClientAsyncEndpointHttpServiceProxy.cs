@@ -16,6 +16,10 @@ namespace TypeSafe.Http.Net
 		/// <inheritdoc />
 		public override string BaseUrl => BaseUrlFuture.Result;
 
+		//TODO: This is bad design to leave this null even though we know we'll have it initialized before it's used.
+		/// <inheritdoc />
+		protected override HttpClient Client { get; }
+
 		/// <summary>
 		/// Interanl syncronization object.
 		/// </summary>
@@ -24,6 +28,18 @@ namespace TypeSafe.Http.Net
 		public HttpClientAsyncEndpointHttpServiceProxy(Task<string> baseUrlFuture)
 			: base()
 		{
+			if (baseUrlFuture == null) throw new ArgumentNullException(nameof(baseUrlFuture));
+
+			Client = new HttpClient();
+			BaseUrlFuture = baseUrlFuture;
+		}
+
+		public HttpClientAsyncEndpointHttpServiceProxy(Task<string> baseUrlFuture, HttpMessageHandler messageHandler)
+		{
+			if (baseUrlFuture == null) throw new ArgumentNullException(nameof(baseUrlFuture));
+			if (messageHandler == null) throw new ArgumentNullException(nameof(messageHandler));
+
+			Client = new HttpClient(messageHandler);
 			BaseUrlFuture = baseUrlFuture;
 		}
 
