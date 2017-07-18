@@ -44,7 +44,7 @@ namespace TypeSafe.Http.Net
 		/// <inheritdoc />
 		public async Task<TReturnType> DeserializeAsync<TReturnType>(IResponseBodyReader reader)
 		{
-			string json = await reader.ReadAsStringAsync();
+			string json = await reader.ReadAsStringAsync().ConfigureAwait(false);
 
 			return JsonConvert.DeserializeObject<TReturnType>(json);
 		}

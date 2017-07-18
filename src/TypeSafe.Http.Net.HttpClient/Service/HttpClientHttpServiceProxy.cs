@@ -25,9 +25,11 @@ namespace TypeSafe.Http.Net
 			if (requestContext == null) throw new ArgumentNullException(nameof(requestContext));
 			if (serializer == null) throw new ArgumentNullException(nameof(serializer));
 
-			using (HttpResponseMessage response = await SendHttpRequest(requestContext, serializer))
+			using (HttpResponseMessage response = await SendHttpRequest(requestContext, serializer).ConfigureAwait(false))
 			{
-				return await FindValidDeserializer(deserializationFactory, response).DeserializeAsync<TReturnType>(new HttpClientResponseBodyReader(response));
+				return await FindValidDeserializer(deserializationFactory, response)
+					.DeserializeAsync<TReturnType>(new HttpClientResponseBodyReader(response))
+					.ConfigureAwait(false);
 			}
 		}
 
@@ -45,9 +47,11 @@ namespace TypeSafe.Http.Net
 		{
 			if (requestContext == null) throw new ArgumentNullException(nameof(requestContext));
 
-			using (HttpResponseMessage response = await SendHttpRequest(requestContext))
+			using (HttpResponseMessage response = await SendHttpRequest(requestContext).ConfigureAwait(false))
 			{
-				return await FindValidDeserializer(deserializationFactory, response).DeserializeAsync<TReturnType>(new HttpClientResponseBodyReader(response));
+				return await FindValidDeserializer(deserializationFactory, response)
+					.DeserializeAsync<TReturnType>(new HttpClientResponseBodyReader(response))
+					.ConfigureAwait(false);
 			}
 		}
 
@@ -55,7 +59,7 @@ namespace TypeSafe.Http.Net
 		public async Task Send(IHttpClientRequestContext requestContext, IRequestSerializationStrategy serializer)
 		{
 			//Make sure to dipose the response
-			(await SendHttpRequest(requestContext, serializer)).Dispose();
+			(await SendHttpRequest(requestContext, serializer).ConfigureAwait(false)).Dispose();
 		}
 
 		/// <inheritdoc />
@@ -63,7 +67,7 @@ namespace TypeSafe.Http.Net
 		{
 			//Send a request WITHOUT serialization which means no body.
 			//Make sure to dipose the response
-			(await SendHttpRequest(requestContext)).Dispose();
+			(await SendHttpRequest(requestContext).ConfigureAwait(false)).Dispose();
 		}
 
 		//TODO: Document
@@ -77,7 +81,7 @@ namespace TypeSafe.Http.Net
 			{
 				WriteBodyContent(requestContext, serializer, request);
 				WriteHeaders(requestContext, request);
-				return await SendBaseRequest(requestContext, request);
+				return await SendBaseRequest(requestContext, request).ConfigureAwait(false);
 			}
 		}
 
@@ -90,7 +94,7 @@ namespace TypeSafe.Http.Net
 			using (HttpRequestMessage request = new HttpRequestMessage(requestContext.RequestMethod, BuildFullUrlPath(requestContext)))
 			{
 				WriteHeaders(requestContext, request);
-				return await SendBaseRequest(requestContext, request);
+				return await SendBaseRequest(requestContext, request).ConfigureAwait(false);
 			}
 		}
 
@@ -113,7 +117,7 @@ namespace TypeSafe.Http.Net
 				throw new InvalidOperationException($"The {nameof(HttpClient)} property {nameof(Client)} is null.");
 
 			//Don't use a using here, the caller has to be responsible for diposing it because they own it, not us. They may need to use it.
-			HttpResponseMessage response = await Client.SendAsync(request);
+			HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
 
 			//Throw a debug viable message if the response is not successful.
 			if (!response.IsSuccessStatusCode)

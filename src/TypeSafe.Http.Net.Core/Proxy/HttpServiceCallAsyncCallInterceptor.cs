@@ -54,7 +54,7 @@ namespace TypeSafe.Http.Net
 			//If it has no body we don't need to provide or produce serializers for it.
 			if (!context.BodyContext.HasBody)
 			{
-				await ProxyClient.Send(context);
+				await ProxyClient.Send(context).ConfigureAwait(false);
 				return;
 			}
 
@@ -62,7 +62,7 @@ namespace TypeSafe.Http.Net
 			IRequestSerializationStrategy serializer = SerializerFactory.SerializerFor(context.BodyContext.ContentAttributeType);
 
 			//Because we don't need to get any returned information we can just send it
-			await ProxyClient.Send(context, serializer);
+			await ProxyClient.Send(context, serializer).ConfigureAwait(false);
 		}
 
 		public async Task<TResult> AsyncWithReturn<TResult>(IInvocation invocation)
@@ -81,7 +81,7 @@ namespace TypeSafe.Http.Net
 			IRequestSerializationStrategy serializer = SerializerFactory.SerializerFor(context.BodyContext.ContentAttributeType);
 
 			//Because we don't need to get any returned information we can just send it
-			return await ProxyClient.Send<TResult>(context, serializer, DeserializerFactory);
+			return await ProxyClient.Send<TResult>(context, serializer, DeserializerFactory).ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />

@@ -23,13 +23,13 @@ namespace TypeSafe.Http.Net
 		/// <inheritdoc />
 		public async Task<byte[]> ReadAsBytesAsync()
 		{
-			return await Response.Content.ReadAsByteArrayAsync();
+			return await Response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />
 		public async Task<string> ReadAsStringAsync()
 		{
-			return await Response.Content.ReadAsStringAsync();
+			return await Response.Content.ReadAsStringAsync().ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />

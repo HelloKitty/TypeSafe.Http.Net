@@ -40,7 +40,7 @@ namespace TypeSafe.Http.Net
 		/// <inheritdoc />
 		public async Task<TReturnType> DeserializeAsync<TReturnType>(IResponseBodyReader reader)
 		{
-			using (MemoryStream ms = new MemoryStream(await reader.ReadAsBytesAsync()))
+			using (MemoryStream ms = new MemoryStream(await reader.ReadAsBytesAsync().ConfigureAwait(false)))
 			{
 				return ProtoBuf.Serializer.Deserialize<TReturnType>(ms);
 			}

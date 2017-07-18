@@ -40,7 +40,7 @@ namespace TypeSafe.Http.Net
 		{
 			//This is ugly but we should TRUST that the caller knows what they are doing
 			//but it is very likely that the TReturnType is a string
-			return (TReturnType)(object)await reader.ReadAsStringAsync();
+			return (TReturnType)(object)await reader.ReadAsStringAsync().ConfigureAwait(false);
 		}
 	}
 }

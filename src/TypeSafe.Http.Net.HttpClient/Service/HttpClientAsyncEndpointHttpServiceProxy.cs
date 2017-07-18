@@ -49,7 +49,7 @@ namespace TypeSafe.Http.Net
 			//TODO: C#7 can await in locks
 			if (Client.BaseAddress == null)
 			{
-				string url = await BaseUrlFuture;
+				string url = await BaseUrlFuture.ConfigureAwait(false);
 				lock (SyncObj)
 				{
 					if (Client.BaseAddress == null)
@@ -60,7 +60,7 @@ namespace TypeSafe.Http.Net
 			}
 
 			//At this point due to the above await we will have gotten the URI initialized and can send the request.
-			return await base.SendBaseRequest(requestContext, request);
+			return await base.SendBaseRequest(requestContext, request).ConfigureAwait(false);
 		}
 	}
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net;
+using System.Security.Authentication;
 
 namespace TypeSafe.Http.Net.Performance.Tests
 {
@@ -24,9 +25,8 @@ namespace TypeSafe.Http.Net.Performance.Tests
 
 		public static async Task AsyncMain()
 		{
-
 			ITestInterface apiInterface = RestServiceBuilder<ITestInterface>.Create()
-				.RegisterDotNetHttpClient(Task.FromResult(@"http://localhost:5000"))
+				.RegisterDotNetHttpClient(@"https://localhost:5001", new HttpClientHandler() { SslProtocols = SslProtocols.Tls, ServerCertificateCustomValidationCallback = (message, certificate2, arg3, arg4) => true })
 				.RegisterDefaultSerializers()
 				.RegisterJsonNetSerializer()
 				.Build();

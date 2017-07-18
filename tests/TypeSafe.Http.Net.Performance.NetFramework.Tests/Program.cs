@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -22,8 +23,10 @@ namespace TypeSafe.Http.Net.Performance.NetFramework.Tests
 
 		public static async Task AsyncMain()
 		{
+			ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+
 			ITestInterface apiInterface = RestServiceBuilder<ITestInterface>.Create()
-				.RegisterDotNetHttpClient(@"http://localhost.fiddler:5000")
+				.RegisterRestSharpClient(@"https://localhost:5001")
 				.RegisterDefaultSerializers()
 				.RegisterJsonNetSerializer()
 				.Build();
