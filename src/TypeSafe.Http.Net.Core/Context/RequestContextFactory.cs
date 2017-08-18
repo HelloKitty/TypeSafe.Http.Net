@@ -92,15 +92,54 @@ namespace TypeSafe.Http.Net
 			//if there is we need to look through the parameters of the method to find
 			//the replacement.
 
+			//TODO: Make this not O(n^2)
+			ParameterInfo[] parameterInfos = callContext.ServiceMethod.GetParameters();
+
+			//Now we have to build the querystring
+			return AddQueryStringParametersToActionPath(FormatActionPath(baseActionPath, parameters, parameterInfos), parameters, parameterInfos);
+		}
+
+		private string AddQueryStringParametersToActionPath(string baseActionPath, IServiceCallParametersContext parameters, ParameterInfo[] parameterInfos)
+		{
+			MatchCollection queryStringMatches = Regex.Matches(baseActionPath, @"\?[^&]*|&[^&]*");
+
+			bool useQuestionMark = queryStringMatches.IsNullOrEmpty();
+
+			//If there are matches it means there is a query string already being build so we need to append to it.
+			for (int i = 0; i < parameterInfos.Length; i++)
+			{
+				//Check each parameter if it's a querystring parameter.
+				if (parameterInfos[i].GetCustomAttribute<QueryStringParameterAttribute>() != null)
+				{
+					//Check for alias'd parameters
+					AliasAsAttribute asAttribute = parameterInfos[i].GetCustomAttribute<AliasAsAttribute>();
+
+					string parameterName = asAttribute != null ? asAttribute.Name : parameterInfos[i].Name;
+
+					if (useQuestionMark)
+					{
+						baseActionPath = $"{baseActionPath}?{parameterName}={parameters.Parameters[i]}";
+						useQuestionMark = false;
+					}
+					else
+					{
+						baseActionPath = $"{baseActionPath}&{parameterName}={parameters.Parameters[i]}";
+					}
+				}
+			}
+
+			return baseActionPath;
+		}
+
+		private string FormatActionPath(string baseActionPath, IServiceCallParametersContext parameters, ParameterInfo[] parameterInfos)
+		{
 			//TODO: We could probably cache the results to the index of the parameter and attributes gathered for future calls
 			MatchCollection matches = Regex.Matches(baseActionPath, @"\{\*?.*?\}");
 
+			//WE CANNOT JUST RETURN HERE. WE MAY HAVE QUERYSTRING PARAMETERS
 			//If nothing fits this regex then there is nothing to replace in the action path.
 			if (matches.IsNullOrEmpty())
 				return baseActionPath;
-
-			//TODO: Make this not O(n^2)
-			ParameterInfo[] parameterInfos = callContext.ServiceMethod.GetParameters();
 
 			//Keep this null until we need it the first time.
 			AliasAsAttribute[] asAttributes = null;
@@ -135,34 +174,6 @@ namespace TypeSafe.Http.Net
 						//Check if it matches the parameter name
 						if (matchString == $"{{{asAttributes[i].Name}}}")
 							baseActionPath = baseActionPath.Replace(matchString, parameters.Parameters[i].ToString());
-					}
-				}
-			}
-
-			//Now we have to build the querystring
-			MatchCollection queryStringMatches = Regex.Matches(baseActionPath, @"\?[^&]*|&[^&]*");
-
-			bool useQuestionMark = queryStringMatches.IsNullOrEmpty();
-
-			//If there are matches it means there is a query string already being build so we need to append to it.
-			for(int i = 0; i < parameterInfos.Length; i++)
-			{
-				//Check each parameter if it's a querystring parameter.
-				if (parameterInfos[i].GetCustomAttribute<QueryStringParameterAttribute>() != null)
-				{
-					//Check for alias'd parameters
-					AliasAsAttribute asAttribute = parameterInfos[i].GetCustomAttribute<AliasAsAttribute>();
-
-					string parameterName = asAttribute != null ? asAttribute.Name : parameterInfos[i].Name;
-
-					if (useQuestionMark)
-					{
-						baseActionPath = $"{baseActionPath}?{parameterName}={parameters.Parameters[i]}";
-						useQuestionMark = false;
-					}
-					else
-					{
-						baseActionPath = $"{baseActionPath}&{parameterName}={parameters.Parameters[i]}";
 					}
 				}
 			}
