@@ -129,7 +129,7 @@ namespace TypeSafe.Http.Net
 				throw new InvalidOperationException($"Request failed with Code: {response.StatusCode} with Context: {requestContext}.");
 
 			//It's possible it's still a failed request
-			if (!IsSuccessStatusCode(response.StatusCode))
+			if (!IsSuccessStatusCode(response.StatusCode) && !requestContext.SupressedErrorCodesContext.SupressedErrorCodes[(int)response.StatusCode])
 				throw new InvalidOperationException($"Request failed with Code: {response.StatusCode} with Context: {requestContext}.");
 
 			return response;

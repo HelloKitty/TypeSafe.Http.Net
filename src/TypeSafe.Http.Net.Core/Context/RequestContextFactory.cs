@@ -60,18 +60,29 @@ namespace TypeSafe.Http.Net
 
 				//It should have the body content attribute, which is required explictly, that indicates how it should be serialized.
 				if(first.GetCustomAttribute<BodyContentAttribute>() != null)
-					return new HttpRequestContext(httpMethod, baseActionPath, headers, new DefaultBodyContext(parameterContext.Parameters.First(), first.GetCustomAttribute<BodyContentAttribute>().GetType()));
+					return new HttpRequestContext(httpMethod, baseActionPath, headers, new DefaultBodyContext(parameterContext.Parameters.First(), first.GetCustomAttribute<BodyContentAttribute>().GetType()),
+						BuildErrorCodeSupressionContext(callContext));
 			}
 
 			//If it has no parameters then we should return a context with no body.
-			return new HttpRequestContext(httpMethod, baseActionPath, headers, new NoBodyContext());
+			return new HttpRequestContext(httpMethod, baseActionPath, headers, new NoBodyContext(), BuildErrorCodeSupressionContext(callContext));
 		}
 
 		public IHttpClientRequestContext BuildGetRequest(IServiceCallContext callContext, string baseActionPath)
 		{
 			IEnumerable<IRequestHeader> headers = HeaderInterpreterService.ProduceFromContext(callContext, new NoParametersContext());
 
-			return new GetHttpRequestContext(baseActionPath, headers);
+			return new GetHttpRequestContext(baseActionPath, headers, BuildErrorCodeSupressionContext(callContext));
+		}
+
+		public ISupressedErrorCodeContext BuildErrorCodeSupressionContext(IServiceCallContext callContext)
+		{
+			SupressResponseErrorCodesAttribute codesAttribute = callContext.ServiceMethod.GetAttribute<SupressResponseErrorCodesAttribute>();
+
+			if (codesAttribute == null)
+				return new NoErrorCodesSupressedContext();
+
+			return new DefaultErrorCodeSupressedContext(codesAttribute.SupressedCodes);
 		}
 
 		private string BuildFormattedActionPath(string baseActionPath, IServiceCallContext callContext, IServiceCallParametersContext parameters)

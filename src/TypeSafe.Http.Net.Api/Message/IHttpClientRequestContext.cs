@@ -31,5 +31,10 @@ namespace TypeSafe.Http.Net
 		/// Represents the context of the body.
 		/// </summary>
 		IRequestBodyContext BodyContext { get; }
+
+		/// <summary>
+		/// Dictionary of supressed codes. All values are initialized.
+		/// </summary>
+		ISupressedErrorCodeContext SupressedErrorCodesContext { get; }
 	}
 }

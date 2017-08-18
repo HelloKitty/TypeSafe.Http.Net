@@ -120,7 +120,8 @@ namespace TypeSafe.Http.Net
 			HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
 
 			//Throw a debug viable message if the response is not successful.
-			if (!response.IsSuccessStatusCode)
+			//We should only throw if the user didn't request this specific error code to be supressed
+			if (!response.IsSuccessStatusCode && !requestContext.SupressedErrorCodesContext.SupressedErrorCodes[(int)response.StatusCode])
 				throw new InvalidOperationException($"Request failed with Code: {response.StatusCode} with Context: {requestContext}.");
 
 			return response;

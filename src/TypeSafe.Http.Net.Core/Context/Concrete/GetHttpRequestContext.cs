@@ -7,8 +7,8 @@ namespace TypeSafe.Http.Net
 {
 	public sealed class GetHttpRequestContext : HttpRequestContext
 	{
-		public GetHttpRequestContext(string builtActionPath, IEnumerable<IRequestHeader> headers)
-			: base(HttpMethod.Get, builtActionPath, headers, NoBodyContext.Instance)
+		public GetHttpRequestContext(string builtActionPath, IEnumerable<IRequestHeader> headers, ISupressedErrorCodeContext supressedCodesContext)
+			: base(HttpMethod.Get, builtActionPath, headers, NoBodyContext.Instance, supressedCodesContext)
 		{
 
 		}
