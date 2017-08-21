@@ -33,7 +33,7 @@ namespace TypeSafe.Http.Net.Performance.NetFramework.Tests
 
 			Console.WriteLine("About to call intercepted method.");
 
-			Task<TestReturnModel> result = apiInterface.TestMethod("test");
+			Task<TestReturnModel> result = apiInterface.TestMethod("test", "testing dynamic header value");
 
 			Console.WriteLine("API method temporarily yielded.");
 
@@ -50,7 +50,7 @@ namespace TypeSafe.Http.Net.Performance.NetFramework.Tests
 			[Header("Hello-Base-Y", "Test")]
 			[Header("Hello-Base-Y", "Test2", "Test3", "Test4")]
 			//[SupressResponseErrorCodes(404)]
-			Task<TestReturnModel> TestMethod(string endpoint);
+			Task<TestReturnModel> TestMethod(string endpoint, [DynamicHeader("hi")] string test);
 		}
 
 		[JsonObject]

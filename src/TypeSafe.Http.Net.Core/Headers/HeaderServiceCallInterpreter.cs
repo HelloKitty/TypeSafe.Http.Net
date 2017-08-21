@@ -17,7 +17,30 @@ namespace TypeSafe.Http.Net
 
 			//TODO: Caching
 			return AddServiceWideHeaders(serviceContext.ServiceType)
-				.Concat(AddMethodSpecificHeaders(serviceContext.ServiceMethod)).ToArray();
+				.Concat(AddMethodSpecificHeaders(serviceContext.ServiceMethod))
+				.Concat(AddDynamicHeaders(serviceContext.ServiceMethod.GetParameters(), parameters.Parameters))
+				.ToArray();
+		}
+
+		//TODO: We need to cache this stuff, it will get expensive.
+		private IEnumerable<IRequestHeader> AddDynamicHeaders(IEnumerable<ParameterInfo> parameters, object[] parameterValues)
+		{
+			List<IRequestHeader> headers = new List<IRequestHeader>(parameterValues.Length / 2 + 1); //a pretty good guess.
+
+			int i = -1;
+			foreach (ParameterInfo pi in parameters)
+			{
+				i++;
+
+				DynamicHeaderAttribute dynamicHeaderAttribute = pi.GetCustomAttribute<DynamicHeaderAttribute>();
+
+				if (dynamicHeaderAttribute == null)
+					continue;
+
+				headers.Add(new BasicRequestHeader(dynamicHeaderAttribute.HeaderType, parameterValues[i]?.ToString()));
+			}
+
+			return headers;
 		}
 
 		private IEnumerable<IRequestHeader> AddServiceWideHeaders(Type type)

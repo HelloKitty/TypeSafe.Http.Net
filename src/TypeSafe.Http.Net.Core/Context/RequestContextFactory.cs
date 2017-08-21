@@ -51,7 +51,7 @@ namespace TypeSafe.Http.Net
 		private IHttpClientRequestContext BuildNonGetRequest(HttpMethod httpMethod, IServiceCallContext callContext, IServiceCallParametersContext parameterContext, string baseActionPath)
 		{
 			//We don't currently support dynamic header values so
-			IEnumerable<IRequestHeader> headers = HeaderInterpreterService.ProduceFromContext(callContext, new NoParametersContext());
+			IEnumerable<IRequestHeader> headers = HeaderInterpreterService.ProduceFromContext(callContext, parameterContext);
 
 			if (parameterContext.HasParameters)
 			{

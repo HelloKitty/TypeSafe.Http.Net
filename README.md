@@ -10,17 +10,18 @@ TypeSafe.Http.Net is a heavily inspired by Square's [Retrofit library](http://sq
 - [x] **Net45**
 - [x] Type Headers
 - [x] Method Headers
-- [ ] Dynamic Header Values/Formatting
+- [x] Dynamic Header Values/Formatting
 - [x] Action Paths
 - [x] Dynamic Action Paths
 - [x] JSON Serialization/Deserialization
 - [x] URL Encoded Body Serialization/Deserialization
 - [ ] URL Encoded Dictionary Serialization/Deserialization
 - [x] Protobuf Serialization/Deserialization
+- [x] .NET Framework XML Serializer Serialization/Deserialization
 - [ ] Multipart
 - [ ] Stream Content
 - [x] [.NET HttpClient Implementation](https://msdn.microsoft.com/en-us/library/system.net.http.httpclient(v=vs.118).aspx)
-- [ ] [RestSharp Implementation](https://github.com/restsharp/RestSharp)
+- [x] [RestSharp Implementation](https://github.com/restsharp/RestSharp)
 
 ## How to Use
 

@@ -81,6 +81,10 @@
       <Project>{6ff28b8f-8fe2-4772-a001-30e5827bd813}</Project>
       <Name>TypeSafe.Http.Net.RestSharp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\TypeSafe.Http.Net.Serializer.DotNetXml\TypeSafe.Http.Net.Serializer.DotNetXml.csproj">
+      <Project>{dd317132-f6c9-49bc-b30b-fb8ccf46f88d}</Project>
+      <Name>TypeSafe.Http.Net.Serializer.DotNetXml</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\TypeSafe.Http.Net.Serializer.JsonNET\TypeSafe.Http.Net.Serializer.JsonNET.csproj">
       <Project>{0881a590-1180-4a2c-9f73-77a83f305b75}</Project>
       <Name>TypeSafe.Http.Net.Serializer.JsonNET</Name>
