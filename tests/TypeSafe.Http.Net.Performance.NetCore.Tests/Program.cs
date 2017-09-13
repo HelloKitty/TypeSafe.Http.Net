@@ -25,7 +25,7 @@ namespace TypeSafe.Http.Net.Performance.Tests
 
 		public static async Task AsyncMain()
 		{
-			ITestInterface apiInterface = RestServiceBuilder<ITestInterface>.Create()
+			ITestInterface apiInterface = TypeSafeHttpBuilder<ITestInterface>.Create()
 				.RegisterDotNetHttpClient(@"https://localhost:5001", new HttpClientHandler() { SslProtocols = SslProtocols.Tls, ServerCertificateCustomValidationCallback = (message, certificate2, arg3, arg4) => true })
 				.RegisterDefaultSerializers()
 				.RegisterJsonNetSerializer()

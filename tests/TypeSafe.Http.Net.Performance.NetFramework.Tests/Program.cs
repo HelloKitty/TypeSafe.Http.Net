@@ -25,7 +25,7 @@ namespace TypeSafe.Http.Net.Performance.NetFramework.Tests
 		{
 			ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
 
-			ITestInterface apiInterface = RestServiceBuilder<ITestInterface>.Create()
+			ITestInterface apiInterface = TypeSafeHttpBuilder<ITestInterface>.Create()
 				.RegisterRestSharpClient(@"http://localhost.fiddler:5000")
 				.RegisterDefaultSerializers()
 				.RegisterJsonNetSerializer()
