@@ -40,20 +40,18 @@ namespace TypeSafe.Http.Net
 			if (httpMethod == null)
 				throw new InvalidOperationException($"Method: {callContext.ServiceMethod.Name} on Type: {callContext.ServiceType.FullName} cannot produce valid HTTP method.");
 
-			//We can build a get request much easier; it doesn't have a body.
-			if (httpMethod.Method == HttpMethod.Get)
-				return BuildGetRequest(callContext, parameterContext.HasParameters ? BuildFormattedActionPath(httpMethod.Path, callContext, parameterContext) : httpMethod.Path);
-			else
-				return BuildNonGetRequest(httpMethod.Method, callContext, parameterContext, 
+			return BuildRequest(httpMethod.Method, callContext, parameterContext, 
 					parameterContext.HasParameters ? BuildFormattedActionPath(httpMethod.Path, callContext, parameterContext) : httpMethod.Path);
 		}
 
-		private IHttpClientRequestContext BuildNonGetRequest(HttpMethod httpMethod, IServiceCallContext callContext, IServiceCallParametersContext parameterContext, string baseActionPath)
+		private IHttpClientRequestContext BuildRequest(HttpMethod httpMethod, IServiceCallContext callContext, IServiceCallParametersContext parameterContext, string baseActionPath)
 		{
 			//We don't currently support dynamic header values so
 			IEnumerable<IRequestHeader> headers = HeaderInterpreterService.ProduceFromContext(callContext, parameterContext);
 
-			if (parameterContext.HasParameters)
+			//If it has parameters and is not a get it COULD be a body parameter. So we should check it to build the body
+			//We should try to skip this for performance if it is a get.
+			if (parameterContext.HasParameters && httpMethod.Method != HttpMethod.Get.Method)
 			{
 				//If it has parameters it STILL may not have a body. They may be used for querystring or action path.
 				ParameterInfo first = callContext.ServiceMethod.GetParameters().First();
