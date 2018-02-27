@@ -1,63 +1,37 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6FF28B8F-8FE2-4772-A001-30E5827BD813}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TypeSafe.Http.Net.RestSharp</RootNamespace>
-    <AssemblyName>TypeSafe.Http.Net.RestSharp</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net452</TargetFramework>
+    <Authors>https://github.com/HelloKitty</Authors>
+    <Company>https://github.com/HelloKitty</Company>
+    <Product>TypeSafe.Http.Net</Product>
+    <Description>TypeSafe.Http.Net is a type safe REST/HTTP/Web framework that automagically allows you to make service calls to servers through simple annotated interfaces.
+
+This library is an implementation of the IRestServiceProxy which can be registered using RegisterRestSharpClient(...) on the builder. This will allow TypeSafe.Http.Net to utilize a RestSharp HTTP client for its service.</Description>
+    <Copyright>Andrew Blakely</Copyright>
+    <PackageLicenseUrl>https://github.com/HelloKitty/TypeSafe.Http.Net/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/HelloKitty/TypeSafe.Http.Net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/HelloKitty/TypeSafe.Http.Net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Refit Rest Client .NET Retrofit TypeSafe HTTP Type Safe</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.4\TypeSafe.Http.Net.RestSharp.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net45\TypeSafe.Http.Net.RestSharp.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+    <PackageReference Include="RestSharp" Version="106.2.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
+    <Reference Include="System.Net.Http, Version=4.0.0.0, PublicKeyToken=b03f5f7f11d50a3a">
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Extensions\RegisterHttpClientProviderExtensions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\DefaultRestSharpHttpServiceProxy.cs" />
-    <Compile Include="Service\RestSharpHttpServiceProxy.cs" />
-    <Compile Include="Message\RestSharpRequestBodyWriter.cs" />
-    <Compile Include="Message\RestSharpResponseBodyReader.cs" />
+    <ProjectReference Include="..\TypeSafe.Http.Net.Api\TypeSafe.Http.Net.Api.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TypeSafe.Http.Net.Api\TypeSafe.Http.Net.Api.csproj">
-      <Project>{c522729d-391f-4232-b37c-c9ea65761c7e}</Project>
-      <Name>TypeSafe.Http.Net.Api</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>
