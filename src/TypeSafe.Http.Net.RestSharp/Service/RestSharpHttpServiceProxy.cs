@@ -55,22 +55,22 @@ namespace TypeSafe.Http.Net
 		}
 
 		/// <inheritdoc />
-		public async Task Send(IHttpClientRequestContext requestContext, IRequestSerializationStrategy serializer)
+		public Task Send(IHttpClientRequestContext requestContext, IRequestSerializationStrategy serializer)
 		{
 			//Make sure to dipose the response
-			await SendHttpRequest(requestContext, serializer).ConfigureAwait(false);
+			return SendHttpRequest(requestContext, serializer);
 		}
 
 		/// <inheritdoc />
-		public async Task Send(IHttpClientRequestContext requestContext)
+		public Task Send(IHttpClientRequestContext requestContext)
 		{
 			//Send a request WITHOUT serialization which means no body.
 			//Make sure to dipose the response
-			await SendHttpRequest(requestContext).ConfigureAwait(false);
+			return SendHttpRequest(requestContext);
 		}
 
 		//TODO: Document
-		private async Task<IRestResponse> SendHttpRequest(IHttpClientRequestContext requestContext, IRequestSerializationStrategy serializer)
+		private Task<IRestResponse> SendHttpRequest(IHttpClientRequestContext requestContext, IRequestSerializationStrategy serializer)
 		{
 			if (requestContext == null) throw new ArgumentNullException(nameof(requestContext));
 			if (serializer == null) throw new ArgumentNullException(nameof(serializer));
@@ -81,7 +81,7 @@ namespace TypeSafe.Http.Net
 
 			WriteBodyContent(requestContext, serializer, request);
 			WriteHeaders(requestContext, request);
-			return await SendBaseRequest(requestContext, request).ConfigureAwait(false);
+			return SendBaseRequest(requestContext, request);
 		}
 
 		private Method ConvertToRestSharpMethod(HttpMethod httpMethod)
@@ -91,7 +91,7 @@ namespace TypeSafe.Http.Net
 		}
 
 		//TODO: Document
-		private async Task<IRestResponse> SendHttpRequest(IHttpClientRequestContext requestContext)
+		private Task<IRestResponse> SendHttpRequest(IHttpClientRequestContext requestContext)
 		{
 			if (requestContext == null) throw new ArgumentNullException(nameof(requestContext));
 
@@ -100,7 +100,7 @@ namespace TypeSafe.Http.Net
 			request.Resource = BuildFullUrlPath(requestContext);
 
 			WriteHeaders(requestContext, request);
-			return await SendBaseRequest(requestContext, request).ConfigureAwait(false);
+			return SendBaseRequest(requestContext, request);
 		}
 
 		private string BuildFullUrlPath(IHttpClientRequestContext requestContext)
@@ -122,7 +122,8 @@ namespace TypeSafe.Http.Net
 			if (Client == null)
 				throw new InvalidOperationException($"The {nameof(HttpClient)} property {nameof(Client)} is null.");
 
-			IRestResponse response = await Client.ExecuteTaskAsync(request).ConfigureAwait(false);
+			IRestResponse response = await Client.ExecuteTaskAsync(request)
+				.ConfigureAwait(false);
 
 			//This indicates that the request encountered a network error: https://github.com/restsharp/RestSharp/wiki/Getting-Started
 			if (response.ResponseStatus != ResponseStatus.Completed)
@@ -130,7 +131,7 @@ namespace TypeSafe.Http.Net
 
 			//It's possible it's still a failed request
 			if (!IsSuccessStatusCode(response.StatusCode) && !requestContext.SupressedErrorCodesContext.SupressedErrorCodes[(int)response.StatusCode])
-				throw new InvalidOperationException($"Request failed with Code: {response.StatusCode} with Context: {requestContext}.");
+				throw new FailedRestSharpRequestException($"Request failed with Code: {response.StatusCode} Reason: {response.ErrorMessage}", response.ErrorException, requestContext, response);
 
 			return response;
 		}

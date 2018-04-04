@@ -122,7 +122,7 @@ namespace TypeSafe.Http.Net
 			//Throw a debug viable message if the response is not successful.
 			//We should only throw if the user didn't request this specific error code to be supressed
 			if (!response.IsSuccessStatusCode && !requestContext.SupressedErrorCodesContext.SupressedErrorCodes[(int)response.StatusCode])
-				throw new InvalidOperationException($"Request failed with Code: {response.StatusCode} with Context: {requestContext}.");
+				throw new FailedHttpClientRequestException($"Request failed with Code: {response.StatusCode} Reason: {response.ReasonPhrase}", requestContext, response);
 
 			return response;
 		}
