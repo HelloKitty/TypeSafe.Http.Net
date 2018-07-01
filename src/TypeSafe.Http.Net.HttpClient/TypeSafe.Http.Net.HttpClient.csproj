@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.4;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <Authors>https://github.com/HelloKitty</Authors>
     <Company>https://github.com/HelloKitty</Company>
     <Product>TypeSafe.Http.Net</Product>

@@ -44,7 +44,7 @@ namespace TypeSafe.Http.Net
 			RequestMessage.Content = new ByteArrayContent(bytes);
 			RequestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentTypeValue);
 
-#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2 || NETSTANDARD1_3 || NETSTANDARD1_4 || NET46
+#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2 || NETSTANDARD1_3 || NETSTANDARD1_4 || NET46 || NETSTANDARD2_0
 			return Task.CompletedTask;
 #endif
 
@@ -60,7 +60,7 @@ namespace TypeSafe.Http.Net
 			RequestMessage.Content = new StringContent(content);
 			RequestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentTypeValue);
 
-#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2 || NETSTANDARD1_3 || NETSTANDARD1_4 || NET46
+#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2 || NETSTANDARD1_3 || NETSTANDARD1_4 || NET46 || NETSTANDARD2_0
 			return Task.CompletedTask;
 #endif
 

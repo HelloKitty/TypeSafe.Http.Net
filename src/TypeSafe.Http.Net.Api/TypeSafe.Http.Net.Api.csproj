@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <RootNamespace>TypeSafe.Http.Net</RootNamespace>
     <Description>TypeSafe.Http.Net is a type safe REST/HTTP/Web framework that automagically allows you to make service calls to servers through simple annotated interfaces.
 
