@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeSafe.Http.Net.Serialize
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeSafe.Http.Net.Performance.NetFramework.Tests", "tests\TypeSafe.Http.Net.Performance.NetFramework.Tests\TypeSafe.Http.Net.Performance.NetFramework.Tests.csproj", "{9CC99584-32AA-4C9B-8322-7B6732EEF935}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeSafe.Http.Net.RestSharp", "src\TypeSafe.Http.Net.RestSharp\TypeSafe.Http.Net.RestSharp.csproj", "{6FF28B8F-8FE2-4772-A001-30E5827BD813}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeSafe.Http.Net.RestSharp", "src\TypeSafe.Http.Net.RestSharp\TypeSafe.Http.Net.RestSharp.csproj", "{6FF28B8F-8FE2-4772-A001-30E5827BD813}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeSafe.Http.Net.Serializer.DotNetXml", "src\TypeSafe.Http.Net.Serializer.DotNetXml\TypeSafe.Http.Net.Serializer.DotNetXml.csproj", "{DD317132-F6C9-49BC-B30B-FB8CCF46F88D}"
 EndProject
@@ -92,7 +92,10 @@ Global
 		{4F3EA168-7B79-4B72-A080-67E77494F808} = {82223BC2-FD46-45B7-8714-A1BBB6FACC0E}
 		{5768DDA2-4A92-46FC-AC76-FDB740B0849B} = {1A5E6799-1638-4A1D-9AB7-D970CECB9DC9}
 		{9CC99584-32AA-4C9B-8322-7B6732EEF935} = {FCFAE99C-C28A-44B7-A7BE-F9D5481C35B9}
-		{6FF28B8F-8FE2-4772-A001-30E5827BD813} = {4F3EA168-7B79-4B72-A080-67E77494F808}
+		{6FF28B8F-8FE2-4772-A001-30E5827BD813} = {1A5E6799-1638-4A1D-9AB7-D970CECB9DC9}
 		{DD317132-F6C9-49BC-B30B-FB8CCF46F88D} = {1A5E6799-1638-4A1D-9AB7-D970CECB9DC9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {57CC0D43-CAB4-480B-B588-CB76B53163E7}
 	EndGlobalSection
 EndGlobal
